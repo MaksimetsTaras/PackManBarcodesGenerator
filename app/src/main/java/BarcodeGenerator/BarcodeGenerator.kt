@@ -22,8 +22,32 @@ import kotlinx.coroutines.launch
 
 class BarcodeGenerator {
 
+    val endOfTransmission = Character.toString(4.toChar())
+    val FS = Character.toString(28.toChar())
+    val GS = Character.toString(29.toChar())
+    val RS = Character.toString(30.toChar())
+    val US = Character.toString(31.toChar())
+
     @Composable
-    fun createQRcode(
+    fun createBoxQRcode(boxInfo: BoxQRcode): BitmapPainter {
+
+        val sb = StringBuilder()
+        sb.append("[)>").append(RS)
+        sb.append("06").append(GS)
+        sb.append("X").append(boxInfo.packaging).append(GS)
+        sb.append("3OS").append(boxInfo.article)
+        sb.append("-").append(boxInfo.index).append(GS)
+        sb.append("Q").append(boxInfo.quantityInBox).append(GS)
+        sb.append("V").append(boxInfo.batchNumber).append(GS)
+        sb.append("HM00").append(GS)
+        sb.append("P").append(boxInfo.customerArticle).append(GS)
+        sb.append("B12109583").append(RS).append(endOfTransmission)
+
+        return createQRcode(sb.toString())
+    }
+
+    @Composable
+    private fun createQRcode(
         content: String,
         size: Dp = 150.dp,
         padding: Dp = 0.dp
@@ -87,4 +111,6 @@ class BarcodeGenerator {
             BitmapPainter(currentBitmap.asImageBitmap())
         }
     }
+
+
 }

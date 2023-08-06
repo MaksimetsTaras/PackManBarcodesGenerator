@@ -50,26 +50,7 @@ class MainActivity : ComponentActivity() {
 //}
 
 
-//        val barcodeGenerator = BarcodeGenerator()
-//
-//        val sb = StringBuilder()
-//        sb.append("[)>").append(Ascii.RS)
-//        sb.append("06").append(Ascii.GS)
-//        sb.append("X453940087").append(Ascii.GS)
-//        sb.append("3OS10541451-07").append(Ascii.GS)
-//        sb.append("Q5").append(Ascii.GS)
-//        sb.append("V720716").append(Ascii.GS)
-//        sb.append("HM00").append(Ascii.GS)
-//        sb.append("PO3854712").append(Ascii.GS)
-//        sb.append("B12109583").append(Ascii.RS).append(Ascii.endOfTransmission)
-//
-//
-//        Image(
-//            painter = barcodeGenerator.createQRcode(sb.toString()),
-//            contentDescription = "DEV Communit Code",
-//            contentScale = ContentScale.FillBounds,
-//            modifier = Modifier.size(135.dp),
-//        )
+
 //
 //
 //
@@ -87,13 +68,7 @@ class MainActivity : ComponentActivity() {
 //    }
 //}
 
-object Ascii {
-    val endOfTransmission = Character.toString(4.toChar())
-    val FS = Character.toString(28.toChar())
-    val GS = Character.toString(29.toChar())
-    val RS = Character.toString(30.toChar())
-    val US = Character.toString(31.toChar())
-}
+
 
 
 //@Composable
