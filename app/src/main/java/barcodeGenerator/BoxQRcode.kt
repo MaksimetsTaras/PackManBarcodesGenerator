@@ -1,4 +1,4 @@
-package BarcodeGenerator
+package barcodeGenerator
 
 data class BoxQRcode(
     var packaging: String = "453940087",

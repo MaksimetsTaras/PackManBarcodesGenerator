@@ -1,12 +1,10 @@
 package com.example.packmanbarcodesgenerator.screens
 
-import BarcodeGenerator.BarcodeGenerator
-import BarcodeGenerator.BoxQRcode
+import barcodeGenerator.BarcodeGenerator
+import barcodeGenerator.BoxQRcode
 import android.annotation.SuppressLint
-import android.content.Context
-import android.widget.Toast
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,11 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -38,7 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
@@ -62,12 +58,16 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoxScreen() {
 
+
+
     var packaging = remember { mutableStateOf(TextFieldValue("46")) }
-    var article = remember { mutableStateOf(TextFieldValue("10541451")) }
-    var index = remember { mutableStateOf(TextFieldValue("07")) }
-    var quantityInBox = remember { mutableStateOf(TextFieldValue("100")) }
+    val article = remember { mutableStateOf(TextFieldValue("10541451")) }
+    val index = remember { mutableStateOf(TextFieldValue("07")) }
+    val quantityInBox = remember { mutableStateOf(TextFieldValue("100")) }
     var batchNumber = remember { mutableStateOf(TextFieldValue("46")) }
-    var customerArticle = remember { mutableStateOf(TextFieldValue("O3854712")) }
+    val customerArticle = remember { mutableStateOf(TextFieldValue("O3854712")) }
+
+    val qrCode: ImageBitmap = remember {generateQRcode().asImageBitmap()}
 
     Scaffold() {
         Column(
@@ -76,39 +76,95 @@ fun BoxScreen() {
                 .verticalScroll(rememberScrollState())
         ) {
 
-
-            TextField_withButtons(
-                element = article,
-                modifier = Modifier,
-                labelValue = "артикль"
-            )
-
-            TextField_withButtons(
-                element = index,
-                modifier = Modifier,
-                labelValue = "індекс"
-            )
-
-            val boxInfoForQRcode = BoxQRcode(
-                article = article.value.text.toString(),
-                index = index.value.text.toString(),
-                quantityInBox = quantityInBox.value.text.toString(),
-                customerArticle = customerArticle.value.text.toString()
-            )
-
-            val barcodeGenerator = BarcodeGenerator()
-            val boxQRcode: Painter = barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
-
             Image(
-                painter = boxQRcode,
-                contentDescription = "DEV Communit Code",
+                bitmap = qrCode,
+                contentDescription = "QR code",
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier.size(135.dp),
+                modifier = Modifier
+                    .size(135.dp)
+                    .align(Alignment.CenterHorizontally),
             )
+
+            TextField_withButtons(element = article, modifier = Modifier, labelValue = "артикль")
+
+            TextField_withButtons(element = index, modifier = Modifier, labelValue = "індекс")
+
+            TextField_withButtons(
+                element = quantityInBox,
+                modifier = Modifier,
+                labelValue = "кількість в ящику"
+            )
+
+            TextField_withButtons(
+                element = customerArticle,
+                modifier = Modifier,
+                labelValue = "Артикль замовника"
+            )
+
+//            @Composable
+//            fun generateQRcode(): BitmapPainter {
+//                val boxInfoForQRcode = BoxQRcode(
+//                    article = article.value.text.toString(),
+//                    index = index.value.text.toString(),
+//                    quantityInBox = quantityInBox.value.text.toString(),
+//                    customerArticle = customerArticle.value.text.toString()
+//                )
+//
+//                val boxQRcode: BitmapPainter = barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
+//
+//                return boxQRcode
+//            }
+
+            Button(
+                onClick = {
+                    generateQRcode()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+            ) {
+                Text(text = "Згенерувати", color = Color.White)
+            }
         }
     }
+
+//    @Composable
+//    fun generateQRcode(): BitmapPainter {
+//        val boxInfoForQRcode = BoxQRcode(
+//            article = article.value.text.toString(),
+//            index = index.value.text.toString(),
+//            quantityInBox = quantityInBox.value.text.toString(),
+//            customerArticle = customerArticle.value.text.toString()
+//        )
+//
+//        val boxQRcode: BitmapPainter = barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
+//
+//        return boxQRcode
+//    }
 }
 
+
+fun generateQRcode(): Bitmap {
+//    val boxInfoForQRcode = BoxQRcode(
+//        article = article.value.text.toString(),
+//        index = index.value.text.toString(),
+//        quantityInBox = quantityInBox.value.text.toString(),
+//        customerArticle = customerArticle.value.text.toString()
+//    )
+
+    val boxInfoForQRcode = BoxQRcode(
+        article = "article",
+        index = "index",
+        quantityInBox = "quantityInBox",
+        customerArticle = "customerArticle"
+    )
+
+    val barcodeGenerator = BarcodeGenerator()
+    val boxQRcode: Bitmap = barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
+
+
+    return boxQRcode
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -122,8 +178,7 @@ fun TextField_withButtons(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(all = 10.dp)
-            .background(Color.Green),
+            .padding(horizontal = 10.dp, vertical = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         TextField(
@@ -162,7 +217,7 @@ fun TextField_withButtons(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.textFieldColors(
                 focusedTextColor = Color.Gray,
                 disabledTextColor = Color.Transparent,
@@ -179,9 +234,9 @@ fun TextField_withButtons(
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
-                    .width(60.dp)
+                    .width(80.dp)
                     .clickable {
-
+                        element.value = TextFieldValue("Taras")
                     }
             )
 
@@ -191,7 +246,7 @@ fun TextField_withButtons(
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
-                    .width(60.dp)
+                    .width(80.dp)
                     .clickable {
 
                     }
