@@ -1,11 +1,14 @@
 package com.example.packmanbarcodesgenerator.screens
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -53,7 +56,7 @@ import com.example.packmanbarcodesgenerator.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun BoxScreen() {
@@ -77,10 +80,14 @@ fun BoxScreen() {
         )
     }
 
-    Scaffold() {
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        containerColor = Color.Transparent
+    ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
             qrCode.value = generateQRcode(
@@ -97,7 +104,7 @@ fun BoxScreen() {
                 contentDescription = "QR code",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .size(135.dp)
+                    .size(180.dp)
                     .align(Alignment.CenterHorizontally),
             )
 

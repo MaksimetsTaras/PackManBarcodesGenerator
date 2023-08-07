@@ -3,10 +3,21 @@ package com.example.packmanbarcodesgenerator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.example.packmanbarcodesgenerator.ui.theme.PackManBarcodesGeneratorTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,10 +26,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PackManBarcodesGeneratorTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Transparent)
+                        .paint(
+                            painterResource(id = R.drawable.background),
+                            contentScale = ContentScale.FillBounds
+                        ),
+
+                    color = Color.Transparent
                 ) {
                     MainScreen()
                 }
@@ -26,74 +43,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun ShowMainScreen() {
-//
-//    Scaffold(
-//        bottomBar = { BottomNavigationBar() }) {
-//        Text("Hello Scaffold", fontSize = 28.sp)
-//    }
-//}
-
-
-
-//
-//
-//
-//
-//        TextField(value = "SWITCH", onValueChange = {})
-//        val sss: String = "/P283E815550R/3OS1054451-07/SN9336112345678"
-//        Image(
-//            painter = barcodeGenerator.createQRcode(sss),
-//            contentDescription = "DEV Communit Code",
-//            contentScale = ContentScale.FillBounds,
-//            modifier = Modifier.size(135.dp),
-//        )
-//
-//
-//    }
-//}
-
-
-
-
-//@Composable
-//fun BottomNavigationBar() {
-//
-//    var selectedItem by remember { mutableStateOf(0) }
-//
-//    val bottomNavItems = listOf(
-//        BottomNavItem(
-//            name = "Box",
-//            route = "home",
-//            icon = R.drawable.box,
-//        ),
-//        BottomNavItem(
-//            name = "Switch",
-//            route = "add",
-//            icon = R.drawable.part,
-//        ),
-//    )
-
-//    BottomNavigationBar()
-//    NavigationBar {
-//        bottomNavItems.forEachIndexed { index, item ->
-//
-//            NavigationBarItem(
-//                icon = {
-//                    Icon(
-//                        painterResource(id = item.icon),
-//                        contentDescription = "Person Icon"
-//                    )
-//                },
-//                label = { Text(item.name) },
-//                selected = selectedItem == index,
-//                onClick = { selectedItem = index },
-//            )
-//        }
-//    }
-
-//}

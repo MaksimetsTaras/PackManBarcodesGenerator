@@ -40,12 +40,12 @@ class BarcodeGenerator {
 
     private fun createQRcode(
         content: String,
-        size: Dp = 150.dp,
+        size: Dp = 200.dp,
         padding: Dp = 0.dp
     ): Bitmap {
 
-        val width = 150
-        val height = 150
+        val width = 400
+        val height = 400
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val codeWriter = MultiFormatWriter()
 
