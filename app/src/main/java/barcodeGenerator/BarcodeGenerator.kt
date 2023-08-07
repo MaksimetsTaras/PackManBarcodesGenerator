@@ -4,6 +4,8 @@ import android.content.ContentValues.TAG
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.zxing.BarcodeFormat
@@ -18,7 +20,7 @@ class BarcodeGenerator {
     private val RS = 30.toChar().toString()
 
 
-    fun createBoxQRcode(boxInfo: BoxQRcode): Bitmap {
+    fun createBoxQRcode(boxInfo: BoxQRcode): ImageBitmap {
 
         val sb = StringBuilder()
         sb.append("[)>").append(RS)
@@ -32,7 +34,7 @@ class BarcodeGenerator {
         sb.append("P").append(boxInfo.customerArticle).append(GS)
         sb.append("B12109583").append(RS).append(endOfTransmission)
 
-        return createQRcode(sb.toString())
+        return createQRcode(sb.toString()).asImageBitmap()
     }
 
 

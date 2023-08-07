@@ -1,27 +1,30 @@
 package com.example.packmanbarcodesgenerator
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Colors
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.packmanbarcodesgenerator.BottomNav.BottomNavItem
 import com.example.packmanbarcodesgenerator.screens.BoxScreen
 import com.example.packmanbarcodesgenerator.screens.PartScreen
 
@@ -30,21 +33,40 @@ import com.example.packmanbarcodesgenerator.screens.PartScreen
 fun MainScreen() {
 
     val navController = rememberNavController()
+    val backStackEntry = navController.currentBackStackEntryAsState()
 
     Scaffold(
         bottomBar = {
-            val bottomNavItems = listOf("Box", "Part")
+            val bottomNavItems = arrayListOf<bottomNavItem>()
+            bottomNavItems.add(bottomNavItem("Box", "Box", R.drawable.box))
+            bottomNavItems.add(bottomNavItem("Part", "Part", R.drawable.part))
 
-            BottomNavigation() {
-                bottomNavItems.forEach { screen ->
+            BottomNavigation(
+                backgroundColor = colorResource(id = R.color.purple_200),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
+            ) {
+                bottomNavItems.forEach { it ->
+                    val selected = it.route == backStackEntry.value?.destination?.route
+
                     BottomNavigationItem(
-                        selected = false,
-                        onClick = { navController.navigate(screen) },
-                        label = { Text(screen) },
-                        icon = {})
+                        selected = selected,
+                        alwaysShowLabel = false,
+                        onClick = { navController.navigate(it.route) },
+                        label = { Text(it.name) },
+                        selectedContentColor = Color.Transparent,
+                        unselectedContentColor = Color.Blue,
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = it.icon),
+                                contentDescription = it.name
+                            )
+                        })
                 }
             }
-        }) {
+        }
+    ) {
 
         NavHost(navController = navController, startDestination = "Box") {
             composable("Box") {
@@ -57,54 +79,3 @@ fun MainScreen() {
         }
     }
 }
-
-//    @Composable
-//    fun BottomNavigationBar() {
-//
-//        var selectedItem by remember { mutableStateOf(0) }
-//
-////        val bottomNavItems = listOf(
-////            BottomNavItem(
-////                name = "Box",
-////                route = "home",
-////                icon = R.drawable.box,
-////            ),
-////            BottomNavItem(
-////                name = "Switch",
-////                route = "add",
-////                icon = R.drawable.part,
-////            ),
-////        )
-//
-//        val bottomNavItems = listOf("Box", "Part")
-//
-//        BottomNavigation() {
-//            bottomNavItems.forEach { screen ->
-//                BottomNavigationItem(
-//                    selected = false,
-//                    onClick = { navController.navigate(screen) },
-//                    label = { Text(screen) },
-//                    icon = {})
-//            }
-//        }
-//
-////        NavigationBar {
-////            bottomNavItems.forEachIndexed { index, item ->
-////
-////                NavigationBarItem(
-////                    icon = {
-////                        Icon(
-////                            painterResource(id = item.icon),
-////                            contentDescription = "Person Icon"
-////                        )
-////                    },
-////                    label = { Text(item.name) },
-////                    selected = selectedItem == index,
-////                    onClick = {
-////                        selectedItem = index
-////                        navController.navigate()
-////                    },
-////                )
-////            }
-////        }
-//    }

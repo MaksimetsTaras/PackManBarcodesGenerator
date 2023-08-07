@@ -1,9 +1,6 @@
 package com.example.packmanbarcodesgenerator.screens
 
-import barcodeGenerator.BarcodeGenerator
-import barcodeGenerator.BoxQRcode
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.ImageBitmapConfig
+import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
@@ -49,6 +47,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import barcodeGenerator.BarcodeGenerator
+import barcodeGenerator.BoxQRcode
 import com.example.packmanbarcodesgenerator.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,16 +58,24 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoxScreen() {
 
-
-
-    var packaging = remember { mutableStateOf(TextFieldValue("46")) }
+    var packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
     val article = remember { mutableStateOf(TextFieldValue("10541451")) }
     val index = remember { mutableStateOf(TextFieldValue("07")) }
     val quantityInBox = remember { mutableStateOf(TextFieldValue("100")) }
-    var batchNumber = remember { mutableStateOf(TextFieldValue("46")) }
+    var batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
     val customerArticle = remember { mutableStateOf(TextFieldValue("O3854712")) }
 
-    val qrCode: ImageBitmap = remember {generateQRcode().asImageBitmap()}
+    val qrCode = remember {
+        mutableStateOf(
+            ImageBitmap(
+                width = 300,
+                height = 300,
+                config = ImageBitmapConfig.Argb8888,
+                hasAlpha = true,
+                colorSpace = ColorSpaces.Srgb
+            )
+        )
+    }
 
     Scaffold() {
         Column(
@@ -75,9 +83,17 @@ fun BoxScreen() {
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
         ) {
+            qrCode.value = generateQRcode(
+                packaging.value.text,
+                article.value.text,
+                index.value.text,
+                quantityInBox.value.text,
+                batchNumber.value.text,
+                customerArticle.value.text
+            )
 
             Image(
-                bitmap = qrCode,
+                bitmap = qrCode.value,
                 contentDescription = "QR code",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
@@ -101,23 +117,28 @@ fun BoxScreen() {
                 labelValue = "Артикль замовника"
             )
 
-//            @Composable
-//            fun generateQRcode(): BitmapPainter {
-//                val boxInfoForQRcode = BoxQRcode(
-//                    article = article.value.text.toString(),
-//                    index = index.value.text.toString(),
-//                    quantityInBox = quantityInBox.value.text.toString(),
-//                    customerArticle = customerArticle.value.text.toString()
-//                )
-//
-//                val boxQRcode: BitmapPainter = barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
-//
-//                return boxQRcode
-//            }
+            TextField_withButtons(
+                element = packaging,
+                modifier = Modifier,
+                labelValue = "Пакування"
+            )
+
+            TextField_withButtons(
+                element = batchNumber,
+                modifier = Modifier,
+                labelValue = "Бетч"
+            )
 
             Button(
                 onClick = {
-                    generateQRcode()
+                    qrCode.value = generateQRcode(
+                        packaging.value.text,
+                        article.value.text,
+                        index.value.text,
+                        quantityInBox.value.text,
+                        batchNumber.value.text,
+                        customerArticle.value.text
+                    )
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -127,43 +148,6 @@ fun BoxScreen() {
             }
         }
     }
-
-//    @Composable
-//    fun generateQRcode(): BitmapPainter {
-//        val boxInfoForQRcode = BoxQRcode(
-//            article = article.value.text.toString(),
-//            index = index.value.text.toString(),
-//            quantityInBox = quantityInBox.value.text.toString(),
-//            customerArticle = customerArticle.value.text.toString()
-//        )
-//
-//        val boxQRcode: BitmapPainter = barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
-//
-//        return boxQRcode
-//    }
-}
-
-
-fun generateQRcode(): Bitmap {
-//    val boxInfoForQRcode = BoxQRcode(
-//        article = article.value.text.toString(),
-//        index = index.value.text.toString(),
-//        quantityInBox = quantityInBox.value.text.toString(),
-//        customerArticle = customerArticle.value.text.toString()
-//    )
-
-    val boxInfoForQRcode = BoxQRcode(
-        article = "article",
-        index = "index",
-        quantityInBox = "quantityInBox",
-        customerArticle = "customerArticle"
-    )
-
-    val barcodeGenerator = BarcodeGenerator()
-    val boxQRcode: Bitmap = barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
-
-
-    return boxQRcode
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -253,4 +237,26 @@ fun TextField_withButtons(
             )
         }
     }
+}
+
+fun generateQRcode(
+    packaging: String,
+    article: String,
+    index: String,
+    quantityInBox: String,
+    batch: String,
+    customerArticle: String
+): ImageBitmap {
+    val boxInfoForQRcode = BoxQRcode(
+        packaging = packaging,
+        article = article,
+        index = index,
+        quantityInBox = quantityInBox,
+        batchNumber = batch,
+        customerArticle = customerArticle
+    )
+
+    val barcodeGenerator = BarcodeGenerator()
+
+    return barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
 }
