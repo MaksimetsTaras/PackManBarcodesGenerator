@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,12 +20,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -42,6 +49,10 @@ fun MainScreen() {
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
 
+    var bottomNavHeight by remember { mutableStateOf(0.dp) }
+    // get local density from composable
+    val density = LocalDensity.current
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -56,6 +67,11 @@ fun MainScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
+                    .onGloballyPositioned {
+                        bottomNavHeight = with(density) {
+                            it.size.height.toDp()
+                        }
+                    }
             ) {
                 bottomNavItems.forEach { it ->
                     val selected = it.route == backStackEntry.value?.destination?.route
@@ -78,7 +94,13 @@ fun MainScreen() {
         }
     ) {
 
-        NavHost(navController = navController, startDestination = "Box") {
+        NavHost(
+            navController = navController,
+            startDestination = "Box",
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = bottomNavHeight)
+        ) {
             composable("Box") {
                 BoxScreen()
             }

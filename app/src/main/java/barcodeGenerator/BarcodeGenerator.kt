@@ -12,13 +12,11 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 
-
 class BarcodeGenerator {
 
     private val endOfTransmission = 4.toChar().toString()
     private val GS = 29.toChar().toString()
     private val RS = 30.toChar().toString()
-
 
     fun createBoxQRcode(boxInfo: BoxQRcode): ImageBitmap {
 
@@ -59,9 +57,7 @@ class BarcodeGenerator {
                 }
             }
         } catch (e: WriterException) {
-
             Log.d(TAG, "generateQRCode: ${e.message}")
-
         }
         return bitmap
     }

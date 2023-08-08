@@ -1,9 +1,7 @@
 package com.example.packmanbarcodesgenerator.screens
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -61,11 +59,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoxScreen() {
 
-    var packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
+    val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
     val article = remember { mutableStateOf(TextFieldValue("10541451")) }
     val index = remember { mutableStateOf(TextFieldValue("07")) }
     val quantityInBox = remember { mutableStateOf(TextFieldValue("100")) }
-    var batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
+    val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
     val customerArticle = remember { mutableStateOf(TextFieldValue("O3854712")) }
 
     val qrCode = remember {
@@ -88,16 +86,17 @@ fun BoxScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.Bottom
         ) {
-            qrCode.value = generateQRcode(
-                packaging.value.text,
-                article.value.text,
-                index.value.text,
-                quantityInBox.value.text,
-                batchNumber.value.text,
-                customerArticle.value.text
-            )
+//            qrCode.value = generateQRcode(
+//                packaging.value.text,
+//                article.value.text,
+//                index.value.text,
+//                quantityInBox.value.text,
+//                batchNumber.value.text,
+//                customerArticle.value.text
+//            )
 
             Image(
                 bitmap = qrCode.value,
@@ -115,7 +114,7 @@ fun BoxScreen() {
             TextField_withButtons(
                 element = quantityInBox,
                 modifier = Modifier,
-                labelValue = "кількість в ящику"
+                labelValue = "Кількість в ящику"
             )
 
             TextField_withButtons(
