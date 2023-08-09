@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.BoxQRcode
 import com.example.packmanbarcodesgenerator.R
+import incrementTool.IncrementTool
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -226,7 +227,8 @@ fun TextField_withButtons(
                     .height(60.dp)
                     .width(80.dp)
                     .clickable {
-                        element.value = TextFieldValue("Taras")
+                        val decrementedValue = decrementValue(element.value.text)
+                        element.value = TextFieldValue(decrementedValue)
                     }
             )
 
@@ -238,7 +240,8 @@ fun TextField_withButtons(
                     .height(60.dp)
                     .width(80.dp)
                     .clickable {
-
+                        val incrementedValue = incrementValue(element.value.text)
+                        element.value = TextFieldValue(incrementedValue)
                     }
             )
         }
@@ -265,4 +268,15 @@ fun generateQRcode(
     val barcodeGenerator = BarcodeGenerator()
 
     return barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
+}
+
+fun incrementValue(valueToIncrement:String):String{
+    val incrementTool = IncrementTool()
+
+    return incrementTool.incrementValue(valueToIncrement)
+}
+fun decrementValue(valueToDecrement:String):String{
+    val incrementTool = IncrementTool()
+
+    return incrementTool.decrementValue(valueToDecrement)
 }
