@@ -51,9 +51,9 @@ import androidx.compose.ui.unit.sp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.BoxQRcode
 import com.example.packmanbarcodesgenerator.R
-import incrementTool.IncrementTool
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import nextNumberTool.NextNumberTool
 
 @Preview(showBackground = true)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -271,12 +271,12 @@ fun generateQRcode(
 }
 
 fun incrementValue(valueToIncrement:String):String{
-    val incrementTool = IncrementTool()
+    val incrementTool = NextNumberTool()
 
     return incrementTool.incrementValue(valueToIncrement)
 }
 fun decrementValue(valueToDecrement:String):String{
-    val incrementTool = IncrementTool()
+    val incrementTool = NextNumberTool()
 
     return incrementTool.decrementValue(valueToDecrement)
 }
