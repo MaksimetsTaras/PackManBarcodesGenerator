@@ -1,8 +1,8 @@
 package com.example.packmanbarcodesgenerator.screens
 
+import TextAndSwitch
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,14 +13,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +27,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import barcodeGenerator.BarcodeGenerator
-import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 
@@ -46,8 +41,8 @@ fun PartScreen() {
     val SWversion = remember { mutableStateOf(TextFieldValue("8.1")) }
     val serialNumber = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
 
-    var switchCheckedState by remember { mutableStateOf(false) }
-    var switchCheckedState2 by remember { mutableStateOf(false) }
+    val switchCheckedStateHWversion = remember { mutableStateOf(false) }
+    val switchCheckedStateSWversion = remember { mutableStateOf(false) }
 
     val qrCode = remember {
         mutableStateOf(
@@ -73,30 +68,20 @@ fun PartScreen() {
             verticalArrangement = Arrangement.Bottom
         ) {
 
-            Row(modifier = Modifier.fillMaxWidth().background(Color.Blue)) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Text(text = "HW")
-                        Switch(
-                            checked = switchCheckedState,
-                            onCheckedChange = { switchCheckedState = it })
-                    }
-                }
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Text(text = "SW")
-                        Switch(
-                            checked = switchCheckedState2,
-                            onCheckedChange = { switchCheckedState2 = it })
-                    }
-                }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TextAndSwitch(
+                    "HW",
+                    modifier = Modifier.weight(1f),
+                    element = switchCheckedStateHWversion
+                )
+                TextAndSwitch(
+                    "SW",
+                    modifier = Modifier.weight(1f),
+                    element = switchCheckedStateSWversion
+                )
             }
 
 
