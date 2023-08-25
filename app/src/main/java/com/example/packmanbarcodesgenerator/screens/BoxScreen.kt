@@ -91,13 +91,11 @@ fun BoxScreen() {
                 element = packaging, modifier = Modifier, labelValue = "Пакування"
             )
 
-            TextField_withButtons(
-                element = batchNumber, modifier = Modifier, labelValue = "Бетч"
-            )
+            TextField_withButtons(element = batchNumber, modifier = Modifier, labelValue = "Бетч")
 
             Button(
                 onClick = {
-                    qrCode.value = generateQRcode(
+                    qrCode.value = generate_BoxQRcode(
                         packaging.value.text,
                         article.value.text,
                         index.value.text,
@@ -116,7 +114,7 @@ fun BoxScreen() {
     }
 }
 
-fun generateQRcode(
+fun generate_BoxQRcode(
     packaging: String,
     article: String,
     index: String,
@@ -136,16 +134,4 @@ fun generateQRcode(
     val barcodeGenerator = BarcodeGenerator()
 
     return barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
-}
-
-fun incrementValue(valueToIncrement: String): String {
-    val incrementTool = NextNumberTool()
-
-    return incrementTool.incrementValue(valueToIncrement)
-}
-
-fun decrementValue(valueToDecrement: String): String {
-    val incrementTool = NextNumberTool()
-
-    return incrementTool.decrementValue(valueToDecrement)
 }

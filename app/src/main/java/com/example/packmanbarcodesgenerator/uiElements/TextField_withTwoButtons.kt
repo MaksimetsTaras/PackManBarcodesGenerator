@@ -32,10 +32,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.packmanbarcodesgenerator.R
-import com.example.packmanbarcodesgenerator.screens.decrementValue
-import com.example.packmanbarcodesgenerator.screens.incrementValue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import nextNumberTool.NextNumberTool
 
 @Composable
 fun TextField_withButtons(
@@ -129,4 +128,15 @@ fun TextField_withButtons(
             )
         }
     }
+}
+fun incrementValue(valueToIncrement: String): String {
+    val incrementTool = NextNumberTool()
+
+    return incrementTool.incrementValue(valueToIncrement)
+}
+
+fun decrementValue(valueToDecrement: String): String {
+    val incrementTool = NextNumberTool()
+
+    return incrementTool.decrementValue(valueToDecrement)
 }

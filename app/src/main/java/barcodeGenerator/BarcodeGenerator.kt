@@ -35,6 +35,18 @@ class BarcodeGenerator {
         return createQRcode(sb.toString()).asImageBitmap()
     }
 
+    fun createPartQRcode(partInfo: PartQRcode): ImageBitmap {
+
+        val sb = StringBuilder()
+        sb.append("/P").append(partInfo.customerNumber)
+        sb.append("/3OS").append(partInfo.article)
+        sb.append("-").append(partInfo.index)
+        sb.append("/HW").append(partInfo.HWversion)
+        sb.append("/SW").append(partInfo.SWversion)
+        sb.append("/SN").append(partInfo.serialNumber)
+
+        return createQRcode(sb.toString()).asImageBitmap()
+    }
 
     private fun createQRcode(
         content: String,
