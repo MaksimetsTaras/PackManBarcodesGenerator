@@ -40,7 +40,7 @@ import nextNumberTool.NextNumberTool
 fun TextField_withButtons(
     element: MutableState<TextFieldValue>,
     modifier: Modifier,
-    labelValue: String,
+    labelValue: String
 ) {
     val scope = rememberCoroutineScope()
 
@@ -51,13 +51,10 @@ fun TextField_withButtons(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 //        val containerColor = FilledTextFieldTokens.ContainerColor.toColor()
-        TextField(
-            element.value,
+        TextField(element.value,
             onValueChange = { text -> element.value = text },
             textStyle = TextStyle(
-                fontSize = 20.sp,
-                textAlign = TextAlign.Left,
-                background = Color.Transparent
+                fontSize = 20.sp, textAlign = TextAlign.Left, background = Color.Transparent
             ),
             label = {
                 Text(
@@ -69,8 +66,7 @@ fun TextField_withButtons(
                     fontWeight = FontWeight.Bold
                 )
             },
-            modifier = modifier
-                .onFocusChanged {
+            modifier = modifier.onFocusChanged {
                     if (it.hasFocus) {
                         scope.launch {
                             delay(10)
@@ -101,8 +97,7 @@ fun TextField_withButtons(
         )
 
         Row() {
-            Image(
-                painter = painterResource(id = R.drawable.minus),
+            Image(painter = painterResource(id = R.drawable.minus),
                 contentDescription = "Minus",
                 modifier = Modifier
                     .weight(1f)
@@ -111,11 +106,9 @@ fun TextField_withButtons(
                     .clickable {
                         val decrementedValue = decrementValue(element.value.text)
                         element.value = TextFieldValue(decrementedValue)
-                    }
-            )
+                    })
 
-            Image(
-                painter = painterResource(id = R.drawable.plus),
+            Image(painter = painterResource(id = R.drawable.plus),
                 contentDescription = "Plus",
                 modifier = Modifier
                     .weight(1f)
@@ -124,11 +117,11 @@ fun TextField_withButtons(
                     .clickable {
                         val incrementedValue = incrementValue(element.value.text)
                         element.value = TextFieldValue(incrementedValue)
-                    }
-            )
+                    })
         }
     }
 }
+
 fun incrementValue(valueToIncrement: String): String {
     val incrementTool = NextNumberTool()
 

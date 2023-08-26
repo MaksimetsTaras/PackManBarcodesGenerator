@@ -3,6 +3,7 @@ package com.example.packmanbarcodesgenerator.screens
 import TextAndSwitch
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,21 +16,25 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageBitmapConfig
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 
+@Preview(showBackground = true)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PartScreen() {
@@ -41,8 +46,8 @@ fun PartScreen() {
     val SWversion = remember { mutableStateOf(TextFieldValue("8.1")) }
     val serialNumber = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
 
-    val switchCheckedStateHWversion = remember { mutableStateOf(false) }
-    val switchCheckedStateSWversion = remember { mutableStateOf(false) }
+    val switchCheckedStateHWversion = remember { mutableStateOf(true) }
+    val switchCheckedStateSWversion = remember { mutableStateOf(true) }
 
     val qrCode = remember {
         mutableStateOf(
@@ -61,81 +66,92 @@ fun PartScreen() {
             .fillMaxSize(),
         containerColor = Color.Transparent
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.Bottom
-        ) {
+        Column {
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TextAndSwitch(
-                    "HW",
-                    modifier = Modifier.weight(1f),
-                    element = switchCheckedStateHWversion
+                    "HW", modifier = Modifier.weight(1f), element = switchCheckedStateHWversion
                 )
                 TextAndSwitch(
-                    "SW",
-                    modifier = Modifier.weight(1f),
-                    element = switchCheckedStateSWversion
+                    "SW", modifier = Modifier.weight(1f), element = switchCheckedStateSWversion
                 )
             }
 
-
-            Image(
-                bitmap = qrCode.value,
-                contentDescription = "QR code",
-                contentScale = ContentScale.FillBounds,
+            Column(
                 modifier = Modifier
-                    .size(180.dp)
-                    .align(Alignment.CenterHorizontally),
-            )
-
-            TextField_withButtons(element = article, modifier = Modifier, labelValue = "артикль")
-
-            TextField_withButtons(element = index, modifier = Modifier, labelValue = "індекс")
-
-            TextField_withButtons(
-                element = customerNumber, modifier = Modifier, labelValue = "Артикль замовника"
-            )
-
-            TextField_withButtons(
-                element = HWversion,
-                modifier = Modifier,
-                labelValue = "HW версія"
-            )
-
-            TextField_withButtons(
-                element = SWversion,
-                modifier = Modifier,
-                labelValue = "SW версія"
-            )
-
-            TextField_withButtons(
-                element = serialNumber,
-                modifier = Modifier,
-                labelValue = "94288WGI00081"
-            )
-
-            Button(
-                onClick = {
-                    qrCode.value = generate_PartQRcode(
-                        article.value.text,
-                        index.value.text,
-                        customerNumber.value.text,
-                        HWversion.value.text,
-                        SWversion.value.text,
-                        serialNumber.value.text
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp),
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Bottom
             ) {
-                androidx.compose.material3.Text(text = "Згенерувати", color = Color.White)
+
+                Image(
+                    bitmap = qrCode.value,
+                    contentDescription = "QR code",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .size(180.dp)
+                        .align(Alignment.CenterHorizontally),
+                )
+
+                TextField_withButtons(
+                    element = article,
+                    modifier = Modifier,
+                    labelValue = "артикль"
+                )
+
+                TextField_withButtons(
+                    element = index,
+                    modifier = Modifier,
+                    labelValue = "індекс"
+                )
+
+                TextField_withButtons(
+                    element = customerNumber,
+                    modifier = Modifier,
+                    labelValue = "Артикль замовника"
+                )
+
+                if (switchCheckedStateHWversion.value) {
+                    TextField_withButtons(
+                        element = HWversion,
+                        modifier = Modifier,
+                        labelValue = "HW версія"
+                    )
+                }
+
+                if (switchCheckedStateSWversion.value) {
+                    TextField_withButtons(
+                        element = SWversion,
+                        modifier = Modifier,
+                        labelValue = "SW версія"
+                    )
+                }
+
+                TextField_withButtons(
+                    element = serialNumber,
+                    modifier = Modifier,
+                    labelValue = "94288WGI00081"
+                )
+
+                Button(
+                    onClick = {
+                        qrCode.value = generate_PartQRcode(
+                            article.value.text,
+                            index.value.text,
+                            customerNumber.value.text,
+                            HWversion.value.text,
+                            SWversion.value.text,
+                            serialNumber.value.text
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp),
+                ) {
+                    androidx.compose.material3.Text(text = "Згенерувати", color = Color.White)
+                }
             }
         }
     }

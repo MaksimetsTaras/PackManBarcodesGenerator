@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.BoxQRcode
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
-import nextNumberTool.NextNumberTool
 
 @Preview(showBackground = true)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

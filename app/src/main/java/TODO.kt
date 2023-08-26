@@ -5,4 +5,4 @@
 
 
 //TODO Image refreshes, when some values increments or decrements
-//TODO Not always SW and HW present. Need checkbox. If check box enabled, use this check box
+//Done - TODO Not always SW and HW present. Need checkbox. If check box enabled, use this check box
