@@ -60,8 +60,7 @@ class BarcodeGenerator {
         val codeWriter = MultiFormatWriter()
 
         try {
-            val bitMatrix =
-                codeWriter.encode(content, BarcodeFormat.QR_CODE, width, height)
+            val bitMatrix = codeWriter.encode(content, BarcodeFormat.QR_CODE, width, height)
             for (x in 0 until width) {
                 for (y in 0 until height) {
                     val color = if (bitMatrix[x, y]) Color.BLACK else Color.WHITE

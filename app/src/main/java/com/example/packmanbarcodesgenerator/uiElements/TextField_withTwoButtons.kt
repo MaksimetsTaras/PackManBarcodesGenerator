@@ -40,7 +40,7 @@ import nextNumberTool.NextNumberTool
 fun TextField_withButtons(
     element: MutableState<TextFieldValue>,
     modifier: Modifier,
-    labelValue: String
+    labelValue: String,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -50,7 +50,6 @@ fun TextField_withButtons(
             .padding(horizontal = 10.dp, vertical = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-//        val containerColor = FilledTextFieldTokens.ContainerColor.toColor()
         TextField(element.value,
             onValueChange = { text -> element.value = text },
             textStyle = TextStyle(

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -27,12 +28,19 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageBitmapConfig
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Preview(showBackground = true)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -78,6 +86,16 @@ fun PartScreen() {
                     "SW", modifier = Modifier.weight(1f), element = switchCheckedStateSWversion
                 )
             }
+
+            Text(
+                text = multipleColorsInText(
+                    switchCheckedStateSWversion,
+                    switchCheckedStateHWversion
+                ),
+                Modifier.fillMaxWidth(),
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
 
             Column(
                 modifier = Modifier
@@ -177,4 +195,65 @@ fun generate_PartQRcode(
     val barcodeGenerator = BarcodeGenerator()
 
     return barcodeGenerator.createPartQRcode(partInfoForQRcode)
+}
+
+@Composable
+fun multipleColorsInText(
+    SWelement: MutableState<Boolean>,
+    HWelement: MutableState<Boolean>
+): AnnotatedString {
+
+    //  /Pxxx/3OSxxx/HWxxx/SWxxx/SNxxx
+
+    var result: AnnotatedString = buildAnnotatedString {
+        //Customer
+        withStyle(style = SpanStyle(color = Color.Red)) {
+            append("/P")
+        }
+
+        withStyle(style = SpanStyle(color = Color.Gray)) {
+            append("xxx")
+        }
+
+        //Article-Index
+        withStyle(style = SpanStyle(color = Color.Red)) {
+            append("/3OS")
+        }
+
+        withStyle(style = SpanStyle(color = Color.Gray)) {
+            append("xxx")
+        }
+
+        //HW
+
+        if (HWelement.value == true) {
+            withStyle(style = SpanStyle(color = Color.Red)) {
+                append("/HW")
+            }
+
+            withStyle(style = SpanStyle(color = Color.Gray)) {
+                append("xxx")
+            }
+        }
+        //SW
+        if (SWelement.value == true) {
+            withStyle(style = SpanStyle(color = Color.Red)) {
+                append("/SW")
+            }
+
+            withStyle(style = SpanStyle(color = Color.Gray)) {
+                append("xxx")
+            }
+        }
+        //SN
+        withStyle(style = SpanStyle(color = Color.Red)) {
+            append("/SN")
+        }
+
+        withStyle(style = SpanStyle(color = Color.Gray)) {
+            append("xxx")
+        }
+    }
+
+    return result
 }

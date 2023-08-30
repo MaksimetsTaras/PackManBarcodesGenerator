@@ -4,10 +4,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
@@ -31,17 +33,23 @@ fun TextAndSwitch(text: String, modifier: Modifier, element: MutableState<Boolea
         Switch(
             checked = element.value,
             onCheckedChange = { element.value = !element.value },
-            thumbContent = if (element.value) {
-                {
-                    Icon(
-                        imageVector = Icons.Filled.Check,
-                        contentDescription = null,
-                        modifier = Modifier.size(SwitchDefaults.IconSize),
-                    )
-                }
-            } else {
-                null
-            }
+            thumbContent = {
+                Icon(
+                    imageVector = if (element.value) Icons.Filled.Add else Icons.Filled.Clear,
+                    contentDescription = null,
+                    modifier = Modifier.size(SwitchDefaults.IconSize),
+                )
+            },
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Color.Green,
+                checkedIconColor = Color.DarkGray,
+                uncheckedThumbColor = Color.Red,
+                uncheckedIconColor = Color.LightGray,
+                disabledCheckedThumbColor = Color.Green.copy(alpha = ContentAlpha.disabled),
+                disabledUncheckedThumbColor = Color.Red.copy(alpha = ContentAlpha.disabled),
+            )
         )
     }
 }
+
+
