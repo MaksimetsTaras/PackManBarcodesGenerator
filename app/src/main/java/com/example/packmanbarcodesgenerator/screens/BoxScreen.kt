@@ -1,6 +1,8 @@
 package com.example.packmanbarcodesgenerator.screens
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +16,11 @@ import androidx.compose.material.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,10 +35,9 @@ import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.BoxQRcode
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 
-@Preview(showBackground = true)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BoxScreen() {
+fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit) {
 
     val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
     val article = remember { mutableStateOf(TextFieldValue("10541451")) }
@@ -52,6 +56,17 @@ fun BoxScreen() {
                 colorSpace = ColorSpaces.Srgb
             )
         )
+    }
+
+    LaunchedEffect(Unit) {
+        setFabOnClick {  qrCode.value = generate_BoxQRcode(
+            packaging.value.text,
+            article.value.text,
+            index.value.text,
+            quantityInBox.value.text,
+            batchNumber.value.text,
+            customerArticle.value.text
+        ) }
     }
 
     Scaffold(
@@ -92,23 +107,23 @@ fun BoxScreen() {
 
             TextField_withButtons(element = batchNumber, modifier = Modifier, labelValue = "Бетч")
 
-            Button(
-                onClick = {
-                    qrCode.value = generate_BoxQRcode(
-                        packaging.value.text,
-                        article.value.text,
-                        index.value.text,
-                        quantityInBox.value.text,
-                        batchNumber.value.text,
-                        customerArticle.value.text
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp),
-            ) {
-                Text(text = "Згенерувати", color = Color.White)
-            }
+//            Button(
+//                onClick = {
+//                    qrCode.value = generate_BoxQRcode(
+//                        packaging.value.text,
+//                        article.value.text,
+//                        index.value.text,
+//                        quantityInBox.value.text,
+//                        batchNumber.value.text,
+//                        customerArticle.value.text
+//                    )
+//                },
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(5.dp),
+//            ) {
+//                Text(text = "Згенерувати", color = Color.White)
+//            }
         }
     }
 }

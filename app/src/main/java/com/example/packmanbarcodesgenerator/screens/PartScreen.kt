@@ -2,6 +2,8 @@ package com.example.packmanbarcodesgenerator.screens
 
 import TextAndSwitch
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,9 +21,12 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,13 +46,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.PartQRcode
+import com.example.packmanbarcodesgenerator.makeToast
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
-@Preview(showBackground = true)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PartScreen() {
+fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
 
     val article = remember { mutableStateOf(TextFieldValue("10541450")) }
     val index = remember { mutableStateOf(TextFieldValue("02")) }
@@ -70,6 +75,24 @@ fun PartScreen() {
             )
         )
     }
+
+    LaunchedEffect(Unit) {
+        setFabOnClick {
+            qrCode.value = generate_PartQRcode(
+                article.value.text,
+                index.value.text,
+                customerNumber.value.text,
+                HWversion.value.text,
+                SWversion.value.text,
+                serialNumber.value.text,
+                switchCheckedStateHWversion.value,
+                switchCheckedStateSWversion.value,
+            )
+        }
+    }
+
+
+
 
     Scaffold(
         modifier = Modifier
@@ -159,25 +182,25 @@ fun PartScreen() {
                     labelValue = "94288WGI00081"
                 )
 
-                Button(
-                    onClick = {
-                        qrCode.value = generate_PartQRcode(
-                            article.value.text,
-                            index.value.text,
-                            customerNumber.value.text,
-                            HWversion.value.text,
-                            SWversion.value.text,
-                            serialNumber.value.text,
-                            switchCheckedStateHWversion.value,
-                            switchCheckedStateSWversion.value,
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp),
-                ) {
-                    androidx.compose.material3.Text(text = "Згенерувати", color = Color.White)
-                }
+//                Button(
+//                    onClick = {
+//                        qrCode.value = generate_PartQRcode(
+//                            article.value.text,
+//                            index.value.text,
+//                            customerNumber.value.text,
+//                            HWversion.value.text,
+//                            SWversion.value.text,
+//                            serialNumber.value.text,
+//                            switchCheckedStateHWversion.value,
+//                            switchCheckedStateSWversion.value,
+//                        )
+//                    },
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(5.dp),
+//                ) {
+//                    androidx.compose.material3.Text(text = "Згенерувати", color = Color.White)
+//                }
             }
         }
     }

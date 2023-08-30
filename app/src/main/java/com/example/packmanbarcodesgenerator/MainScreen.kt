@@ -67,6 +67,8 @@ fun MainScreen() {
     val density = LocalDensity.current
     val context = LocalContext.current
 
+    val (fabOnClick, setFabOnClick) = remember { mutableStateOf<(() -> Unit)?>(null) }
+
     Box {
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -143,13 +145,13 @@ fun MainScreen() {
                 }
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = { }) {
-//                    Icon(
-//                        imageVector = Icons.Default.KeyboardArrowUp,
-//                        contentDescription = "fab"
-//                    )
-
-                    Image(painter = painterResource(id = R.drawable.barcode), contentDescription = "")
+                FloatingActionButton(onClick = {
+                    fabOnClick?.invoke()
+                }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.barcode),
+                        contentDescription = ""
+                    )
                 }
             },
             floatingActionButtonPosition = FabPosition.Center,
@@ -160,10 +162,10 @@ fun MainScreen() {
                 startDestination = "Box",
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = bottomNavHeight)
+                    .padding(bottom = bottomNavHeight + (bottomNavHeight / 2))
             ) {
-                composable("Box") { BoxScreen() }
-                composable("Part") { PartScreen() }
+                composable("Box") { BoxScreen(setFabOnClick = setFabOnClick) }
+                composable("Part") { PartScreen(setFabOnClick = setFabOnClick) }
             }
         }
     }
