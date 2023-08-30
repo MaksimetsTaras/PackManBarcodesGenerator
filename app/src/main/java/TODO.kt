@@ -4,5 +4,5 @@
 //VW_DPC -  /P6V2959857A     /3OS10130926-04             /SN93266WGO00011
 
 
-//TODO Image refreshes, when some values increments or decrements
+//Not needed - TODO Image refreshes, when some values increments or decrements
 //Done - TODO Not always SW and HW present. Need checkbox. If check box enabled, use this check box

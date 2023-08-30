@@ -42,9 +42,9 @@ fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit) {
     val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
     val article = remember { mutableStateOf(TextFieldValue("10544017")) }
     val index = remember { mutableStateOf(TextFieldValue("00")) }
-    val quantityInBox = remember { mutableStateOf(TextFieldValue("100")) }
+    val quantityInBox = remember { mutableStateOf(TextFieldValue("10")) }
     val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
-    val customerArticle = remember { mutableStateOf(TextFieldValue("A179055601")) }
+    val customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
 
     val qrCode = remember {
         mutableStateOf(
@@ -85,7 +85,7 @@ fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit) {
                 contentDescription = "QR code",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .size(180.dp)
+                    .size(150.dp)
                     .align(Alignment.CenterHorizontally),
             )
 

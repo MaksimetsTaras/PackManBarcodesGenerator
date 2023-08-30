@@ -53,7 +53,7 @@ fun TextField_withButtons(
         TextField(element.value,
             onValueChange = { text -> element.value = text },
             textStyle = TextStyle(
-                fontSize = 20.sp, textAlign = TextAlign.Left, background = Color.Transparent
+                fontSize = 20.sp, textAlign = TextAlign.Left, background = Color.Transparent,
             ),
             label = {
                 Text(
@@ -84,7 +84,7 @@ fun TextField_withButtons(
             ),
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Gray,
+                focusedTextColor = Color.Green,
                 disabledTextColor = Color.Transparent,
                 focusedContainerColor = Color.Gray,
                 unfocusedContainerColor = Color.White,
