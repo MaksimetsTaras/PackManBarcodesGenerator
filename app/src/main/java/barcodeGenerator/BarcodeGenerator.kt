@@ -41,8 +41,13 @@ class BarcodeGenerator {
         sb.append("/P").append(partInfo.customerNumber)
         sb.append("/3OS").append(partInfo.article)
         sb.append("-").append(partInfo.index)
-        sb.append("/HW").append(partInfo.HWversion)
-        sb.append("/SW").append(partInfo.SWversion)
+
+        if (partInfo.isHWpresent)
+            sb.append("/HW").append(partInfo.HWversion)
+
+        if (partInfo.isSWpresent)
+            sb.append("/SW").append(partInfo.SWversion)
+
         sb.append("/SN").append(partInfo.serialNumber)
 
         return createQRcode(sb.toString()).asImageBitmap()

@@ -54,9 +54,9 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
 fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
 
-    val article = remember { mutableStateOf(TextFieldValue("10541450")) }
-    val index = remember { mutableStateOf(TextFieldValue("02")) }
-    val customerNumber = remember { mutableStateOf(TextFieldValue("2527355354R")) }
+    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
+    val index = remember { mutableStateOf(TextFieldValue("00")) }
+    val customerNumber = remember { mutableStateOf(TextFieldValue("A179055601")) }
     val HWversion = remember { mutableStateOf(TextFieldValue("21.1")) }
     val SWversion = remember { mutableStateOf(TextFieldValue("8.1")) }
     val serialNumber = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }

@@ -40,11 +40,11 @@ import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit) {
 
     val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
-    val article = remember { mutableStateOf(TextFieldValue("10541451")) }
-    val index = remember { mutableStateOf(TextFieldValue("07")) }
+    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
+    val index = remember { mutableStateOf(TextFieldValue("00")) }
     val quantityInBox = remember { mutableStateOf(TextFieldValue("100")) }
     val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
-    val customerArticle = remember { mutableStateOf(TextFieldValue("O3854712")) }
+    val customerArticle = remember { mutableStateOf(TextFieldValue("A179055601")) }
 
     val qrCode = remember {
         mutableStateOf(
