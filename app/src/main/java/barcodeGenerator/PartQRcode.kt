@@ -6,5 +6,8 @@ data class PartQRcode(
     var customerNumber: String,
     var HWversion: String,
     var SWversion: String,
-    var serialNumber: String
+    var serialNumber: String,
+    var isHWpresent:Boolean,
+    var isSWpresent:Boolean
+
 )

@@ -54,13 +54,13 @@ class BarcodeGenerator {
         padding: Dp = 0.dp
     ): Bitmap {
 
-        val width = 400
-        val height = 400
+        val width = 70
+        val height = 70
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val codeWriter = MultiFormatWriter()
 
         try {
-            val bitMatrix = codeWriter.encode(content, BarcodeFormat.QR_CODE, width, height)
+            val bitMatrix = codeWriter.encode(content, BarcodeFormat.DATA_MATRIX, width, height)
             for (x in 0 until width) {
                 for (y in 0 until height) {
                     val color = if (bitMatrix[x, y]) Color.BLACK else Color.WHITE

@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 fun TextAndSwitch(text: String, modifier: Modifier, element: MutableState<Boolean>) {
     Row(
         modifier = modifier
-            .padding(10.dp)
             .background(color = Color.Gray, shape = RoundedCornerShape(20.dp)),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

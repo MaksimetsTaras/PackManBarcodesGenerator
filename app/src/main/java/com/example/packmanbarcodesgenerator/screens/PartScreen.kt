@@ -7,10 +7,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -54,8 +56,8 @@ fun PartScreen() {
     val SWversion = remember { mutableStateOf(TextFieldValue("8.1")) }
     val serialNumber = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
 
-    val switchCheckedStateHWversion = remember { mutableStateOf(true) }
-    val switchCheckedStateSWversion = remember { mutableStateOf(true) }
+    val switchCheckedStateHWversion = remember { mutableStateOf(false) }
+    val switchCheckedStateSWversion = remember { mutableStateOf(false) }
 
     val qrCode = remember {
         mutableStateOf(
@@ -77,11 +79,15 @@ fun PartScreen() {
         Column {
 
             Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp, 10.dp, 10.dp), horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextAndSwitch(
                     "HW", modifier = Modifier.weight(1f), element = switchCheckedStateHWversion
                 )
+                Spacer(modifier = Modifier.width(20.dp))
+
                 TextAndSwitch(
                     "SW", modifier = Modifier.weight(1f), element = switchCheckedStateSWversion
                 )
@@ -109,7 +115,7 @@ fun PartScreen() {
                     contentDescription = "QR code",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
-                        .size(180.dp)
+                        .size(150.dp)
                         .align(Alignment.CenterHorizontally),
                 )
 
@@ -161,7 +167,9 @@ fun PartScreen() {
                             customerNumber.value.text,
                             HWversion.value.text,
                             SWversion.value.text,
-                            serialNumber.value.text
+                            serialNumber.value.text,
+                            switchCheckedStateHWversion.value,
+                            switchCheckedStateSWversion.value,
                         )
                     },
                     modifier = Modifier
@@ -181,7 +189,9 @@ fun generate_PartQRcode(
     customerNumber: String,
     HWversion: String,
     SWversion: String,
-    serialNumber: String
+    serialNumber: String,
+    isHWpresent: Boolean,
+    isSWpresent: Boolean
 ): ImageBitmap {
     val partInfoForQRcode = PartQRcode(
         article = article,
@@ -189,7 +199,9 @@ fun generate_PartQRcode(
         customerNumber = customerNumber,
         HWversion = HWversion,
         SWversion = SWversion,
-        serialNumber = serialNumber
+        serialNumber = serialNumber,
+        isHWpresent = isHWpresent,
+        isSWpresent = isSWpresent,
     )
 
     val barcodeGenerator = BarcodeGenerator()
