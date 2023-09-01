@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.BoxQRcode
+import com.example.packmanbarcodesgenerator.TypesOfInput
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -89,41 +90,24 @@ fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit) {
                     .align(Alignment.CenterHorizontally),
             )
 
-            TextField_withButtons(element = article, modifier = Modifier, labelValue = "артикль")
+            TextField_withButtons(element = article, modifier = Modifier, labelValue = "артикль", TypesOfInput.integer)
 
-            TextField_withButtons(element = index, modifier = Modifier, labelValue = "індекс")
+            TextField_withButtons(element = index, modifier = Modifier, labelValue = "індекс", TypesOfInput.integer)
 
             TextField_withButtons(
-                element = quantityInBox, modifier = Modifier, labelValue = "Кількість в ящику"
+                element = quantityInBox, modifier = Modifier, labelValue = "Кількість в ящику", TypesOfInput.integer
             )
 
             TextField_withButtons(
-                element = customerArticle, modifier = Modifier, labelValue = "Артикль замовника"
+                element = customerArticle, modifier = Modifier, labelValue = "Артикль замовника", TypesOfInput.text
             )
 
             TextField_withButtons(
-                element = packaging, modifier = Modifier, labelValue = "Пакування"
+                element = packaging, modifier = Modifier, labelValue = "Пакування", TypesOfInput.integer
             )
 
-            TextField_withButtons(element = batchNumber, modifier = Modifier, labelValue = "Бетч")
+            TextField_withButtons(element = batchNumber, modifier = Modifier, labelValue = "Бетч", TypesOfInput.text)
 
-//            Button(
-//                onClick = {
-//                    qrCode.value = generate_BoxQRcode(
-//                        packaging.value.text,
-//                        article.value.text,
-//                        index.value.text,
-//                        quantityInBox.value.text,
-//                        batchNumber.value.text,
-//                        customerArticle.value.text
-//                    )
-//                },
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(5.dp),
-//            ) {
-//                Text(text = "Згенерувати", color = Color.White)
-//            }
         }
     }
 }

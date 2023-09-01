@@ -45,10 +45,10 @@ class NextNumberTool {
     private val maximumLimitReached = "Maximum limit reached..."
 
     private val lastSymbolInSequence = sequenceOfChars[sequenceOfChars.size - 1]
-    val firstSymbolInSequence = sequenceOfChars[0].toString()
+    private val firstSymbolInSequence = sequenceOfChars[0].toString()
 
-
-    fun incrementValue(valueToIncrement: String): String {
+    //TEXT
+    fun incrementTextValue(valueToIncrement: String): String {
 
         var incrementedValue = valueToIncrement.uppercase()
 
@@ -72,7 +72,7 @@ class NextNumberTool {
         return incrementedValue
     }
 
-    fun decrementValue(valueToDecrement: String): String {
+    fun decrementTextValue(valueToDecrement: String): String {
 
         var changedValue = valueToDecrement.uppercase()
 
@@ -151,5 +151,35 @@ class NextNumberTool {
             }
         }
         return true
+    }
+
+    //INTEGER
+    fun incrementIntegerValue(valueToIncrement: String): String {
+
+        var result: Long = valueToIncrement.toLongOrNull() ?: -999
+
+        if (result != -999L) result++
+
+        if (result < 0) result = 0
+
+        return prepareWithNeededLength(result.toString(), valueToIncrement.length)
+    }
+
+    fun decrementIntegerValue(valueToDecrement: String): String {
+        var result: Long = valueToDecrement.toLongOrNull() ?: -999
+
+        if (result != -999L) result--
+
+        if (result < 0) result = 0
+
+        return prepareWithNeededLength(result.toString(), valueToDecrement.length)
+    }
+
+    private fun prepareWithNeededLength(textBefore: String, neededLength: Int): String {
+        if (textBefore.length >= neededLength) {
+            return textBefore
+        } else {
+            return textBefore.padStart(neededLength, '0')
+        }
     }
 }

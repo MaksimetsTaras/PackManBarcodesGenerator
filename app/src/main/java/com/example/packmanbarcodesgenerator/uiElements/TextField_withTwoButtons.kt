@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.packmanbarcodesgenerator.R
+import com.example.packmanbarcodesgenerator.TypesOfInput
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nextNumberTool.NextNumberTool
@@ -41,6 +42,7 @@ fun TextField_withButtons(
     element: MutableState<TextFieldValue>,
     modifier: Modifier,
     labelValue: String,
+    typeOfInput: TypesOfInput
 ) {
     val scope = rememberCoroutineScope()
 
@@ -50,7 +52,8 @@ fun TextField_withButtons(
             .padding(horizontal = 10.dp, vertical = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        TextField(element.value,
+        TextField(
+            element.value,
             onValueChange = { text -> element.value = text },
             textStyle = TextStyle(
                 fontSize = 20.sp, textAlign = TextAlign.Left, background = Color.Transparent,
@@ -66,20 +69,26 @@ fun TextField_withButtons(
                 )
             },
             modifier = modifier.onFocusChanged {
-                    if (it.hasFocus) {
-                        scope.launch {
-                            delay(10)
-                            val text = element.value.text
-                            element.value = element.value.copy(
-                                selection = TextRange(0, text.length)
-                            )
-                        }
+                if (it.hasFocus) {
+                    scope.launch {
+                        delay(10)
+                        val text = element.value.text
+                        element.value = element.value.copy(
+                            selection = TextRange(0, text.length)
+                        )
                     }
-                },
+                }
+            },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = true,
-                keyboardType = KeyboardType.Number,
+                keyboardType = if (typeOfInput == TypesOfInput.integer) {
+                    KeyboardType.Number
+                } else if (typeOfInput == TypesOfInput.text) {
+                    KeyboardType.Text
+                } else {
+                    KeyboardType.Text
+                },
                 imeAction = ImeAction.Next
             ),
             shape = RoundedCornerShape(15.dp),
@@ -103,7 +112,18 @@ fun TextField_withButtons(
                     .height(60.dp)
                     .width(80.dp)
                     .clickable {
-                        val decrementedValue = decrementValue(element.value.text)
+
+                        val decrementedValue: String
+
+                        if (typeOfInput == TypesOfInput.integer) {
+                            decrementedValue =
+                                decrementValue(element.value.text, TypesOfInput.integer)
+                        } else if (typeOfInput == TypesOfInput.text) {
+                            decrementedValue = decrementValue(element.value.text, TypesOfInput.text)
+                        } else {
+                            decrementedValue = decrementValue(element.value.text, TypesOfInput.text)
+                        }
+
                         element.value = TextFieldValue(decrementedValue)
                     })
 
@@ -114,21 +134,37 @@ fun TextField_withButtons(
                     .height(60.dp)
                     .width(80.dp)
                     .clickable {
-                        val incrementedValue = incrementValue(element.value.text)
+                        val incrementedValue: String
+
+                        if (typeOfInput == TypesOfInput.integer) {
+                            incrementedValue =
+                                incrementValue(element.value.text, TypesOfInput.integer)
+                        } else if (typeOfInput == TypesOfInput.text) {
+                            incrementedValue = incrementValue(element.value.text, TypesOfInput.text)
+                        } else {
+                            incrementedValue = incrementValue(element.value.text, TypesOfInput.text)
+                        }
+
                         element.value = TextFieldValue(incrementedValue)
                     })
         }
     }
 }
 
-fun incrementValue(valueToIncrement: String): String {
-    val incrementTool = NextNumberTool()
+fun incrementValue(valueToIncrement: String, typeOfInput: TypesOfInput): String {
+    val nextNumberTool = NextNumberTool()
 
-    return incrementTool.incrementValue(valueToIncrement)
+    return when (typeOfInput) {
+        TypesOfInput.integer -> nextNumberTool.incrementIntegerValue(valueToIncrement)
+        TypesOfInput.text -> nextNumberTool.incrementTextValue(valueToIncrement)
+    }
 }
 
-fun decrementValue(valueToDecrement: String): String {
-    val incrementTool = NextNumberTool()
+fun decrementValue(valueToDecrement: String, typeOfInput: TypesOfInput): String {
+    val nextNumberTool = NextNumberTool()
 
-    return incrementTool.decrementValue(valueToDecrement)
+    return when (typeOfInput) {
+        TypesOfInput.integer -> nextNumberTool.decrementIntegerValue(valueToDecrement)
+        TypesOfInput.text -> nextNumberTool.decrementTextValue(valueToDecrement)
+    }
 }

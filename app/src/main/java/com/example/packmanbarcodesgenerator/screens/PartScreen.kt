@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.PartQRcode
+import com.example.packmanbarcodesgenerator.TypesOfInput
 import com.example.packmanbarcodesgenerator.makeToast
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
@@ -95,16 +96,15 @@ fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
 
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize(),
-        containerColor = Color.Transparent
+        modifier = Modifier.fillMaxSize(), containerColor = Color.Transparent
     ) {
         Column {
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp, 10.dp, 10.dp), horizontalArrangement = Arrangement.SpaceEvenly
+                    .padding(10.dp, 10.dp, 10.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextAndSwitch(
                     "HW", modifier = Modifier.weight(1f), element = switchCheckedStateHWversion
@@ -118,12 +118,8 @@ fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
 
             Text(
                 text = multipleColorsInText(
-                    switchCheckedStateSWversion,
-                    switchCheckedStateHWversion
-                ),
-                Modifier.fillMaxWidth(),
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center
+                    switchCheckedStateSWversion, switchCheckedStateHWversion
+                ), Modifier.fillMaxWidth(), fontSize = 20.sp, textAlign = TextAlign.Center
             )
 
             Column(
@@ -145,26 +141,30 @@ fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
                 TextField_withButtons(
                     element = article,
                     modifier = Modifier,
-                    labelValue = "артикль"
+                    labelValue = "артикль",
+                    TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = index,
                     modifier = Modifier,
-                    labelValue = "індекс"
+                    labelValue = "індекс",
+                    TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = customerNumber,
                     modifier = Modifier,
-                    labelValue = "Артикль замовника"
+                    labelValue = "Артикль замовника",
+                    TypesOfInput.text
                 )
 
                 if (switchCheckedStateHWversion.value) {
                     TextField_withButtons(
                         element = HWversion,
                         modifier = Modifier,
-                        labelValue = "HW версія"
+                        labelValue = "HW версія",
+                        TypesOfInput.text
                     )
                 }
 
@@ -172,35 +172,15 @@ fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
                     TextField_withButtons(
                         element = SWversion,
                         modifier = Modifier,
-                        labelValue = "SW версія"
+                        labelValue = "SW версія",
+                        TypesOfInput.text
                     )
                 }
 
                 TextField_withButtons(
-                    element = serialNumber,
-                    modifier = Modifier,
-                    labelValue = "94288WGI00081"
+                    element = serialNumber, modifier = Modifier, labelValue = "94288WGI00081", TypesOfInput.text
                 )
 
-//                Button(
-//                    onClick = {
-//                        qrCode.value = generate_PartQRcode(
-//                            article.value.text,
-//                            index.value.text,
-//                            customerNumber.value.text,
-//                            HWversion.value.text,
-//                            SWversion.value.text,
-//                            serialNumber.value.text,
-//                            switchCheckedStateHWversion.value,
-//                            switchCheckedStateSWversion.value,
-//                        )
-//                    },
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(5.dp),
-//                ) {
-//                    androidx.compose.material3.Text(text = "Згенерувати", color = Color.White)
-//                }
             }
         }
     }
@@ -234,8 +214,7 @@ fun generate_PartQRcode(
 
 @Composable
 fun multipleColorsInText(
-    SWelement: MutableState<Boolean>,
-    HWelement: MutableState<Boolean>
+    SWelement: MutableState<Boolean>, HWelement: MutableState<Boolean>
 ): AnnotatedString {
 
     //  /Pxxx/3OSxxx/HWxxx/SWxxx/SNxxx
