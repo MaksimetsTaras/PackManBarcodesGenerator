@@ -46,6 +46,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -125,13 +127,25 @@ fun MainScreen() {
                             }
                         }
                 ) {
+
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
+
                     bottomNavItems.forEach { it ->
                         val selected = it.route == backStackEntry.value?.destination?.route
 
                         BottomNavigationItem(
                             selected = selected,
                             alwaysShowLabel = false,
-                            onClick = { navController.navigate(it.route) },
+                            onClick = {
+                                navController.navigate(it.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
                             label = { Text(it.name) },
                             selectedContentColor = Color.Transparent,
                             unselectedContentColor = Color.Blue,

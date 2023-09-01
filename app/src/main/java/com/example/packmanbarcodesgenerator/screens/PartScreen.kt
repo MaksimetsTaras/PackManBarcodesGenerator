@@ -178,7 +178,7 @@ fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
                 }
 
                 TextField_withButtons(
-                    element = serialNumber, modifier = Modifier, labelValue = "94288WGI00081", TypesOfInput.text
+                    element = serialNumber, modifier = Modifier, labelValue = "Серійний номер", TypesOfInput.text
                 )
 
             }
