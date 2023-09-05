@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -53,14 +57,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import barcodeGenerator.BoxQRcode
 import com.example.packmanbarcodesgenerator.screens.BoxScreen
 import com.example.packmanbarcodesgenerator.screens.PartScreen
+import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
     //JOINT
+    var articleWWW = remember { mutableStateOf(String) }
+
     var article = remember { mutableStateOf(TextFieldValue("10544017")) }
     var index = remember { mutableStateOf(TextFieldValue("00")) }
     var customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
@@ -112,10 +120,62 @@ fun MainScreen() {
                     title = {
                         Text(stringResource(R.string.app_name))
                     },
+                    navigationIcon = {
+                        val iconSave = painterResource(id = R.drawable.load)
+
+                        IconButton(onClick = {
+
+                            val activeBottomItem: String =
+                                backStackEntry.value?.destination?.route.toString()
+
+//                            makeToast(context, activeBottomItem)
+//
+                            if (activeBottomItem == "Box") {
+                                var currentBox = loadFromSharedPreferences(context)
+
+                                val text = currentBox.article
+                                article.value = article.value.copy(
+                                    annotatedString = AnnotatedString("sss", ParagraphStyle(null)),
+                                    selection = TextRange(0, text.length),
+                                    composition = TextRange(0, text.length)
+                                )
+
+
+                            } else {
+
+                            }
+
+//                            val currentBox = BoxQRcode(
+//                                packaging.value.toString(),
+//                                article.value.toString(),
+//                                index.value.toString(),
+//                                quantityInBox.value.toString(),
+//                                batchNumber.value.toString(),
+//                                customerArticle.value.toString()
+//                            )
+//
+//                            saveToSharedPreferences(context, currentBox)
+                        }) {
+                            Icon(painter = iconSave, contentDescription = null)
+                        }
+                    },
                     actions = {
                         val iconSave = painterResource(id = R.drawable.save)
 
-                        IconButton(onClick = { makeToast(context, "Save") }) {
+                        IconButton(onClick = {
+                            makeToast(context, "Save")
+
+                            val currentBox = BoxQRcode(
+                                packaging.value.toString(),
+                                article.value.toString(),
+                                index.value.toString(),
+                                quantityInBox.value.toString(),
+                                batchNumber.value.toString(),
+                                customerArticle.value.toString()
+                            )
+
+                            saveToSharedPreferences(context, currentBox)
+                        }) {
                             Icon(painter = iconSave, contentDescription = null)
                         }
 //                    IconButton(onClick = { makeToast(context, "Save") }) {
@@ -220,4 +280,26 @@ fun MainScreen() {
 
 fun makeToast(ctx: Context, msg: String) {
     Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
+}
+
+fun saveToSharedPreferences(ctx: Context, currentBox: BoxQRcode) {
+    val myShared = mySharedPreferences.mySharedPreferences(ctx)
+
+    val gson = Gson()
+    val json: String = gson.toJson(currentBox)
+
+    myShared.saveBoxValues(json)
+
+}
+
+fun loadFromSharedPreferences(ctx: Context): BoxQRcode {
+    val myShared = mySharedPreferences.mySharedPreferences(ctx)
+
+    val boxString: String = myShared.getPersNumber()
+
+    val gson = Gson()
+
+    val box: BoxQRcode = gson.fromJson(boxString, BoxQRcode::class.java)
+
+    return box
 }

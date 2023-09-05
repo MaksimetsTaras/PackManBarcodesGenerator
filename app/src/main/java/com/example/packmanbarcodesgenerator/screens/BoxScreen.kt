@@ -49,7 +49,7 @@ fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit,
 ) {
 
 //    val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
-//    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
+//    val article = remember { mutableStateOf(TextFieldValue(article.value.toString())) }
 //    val index = remember { mutableStateOf(TextFieldValue("00")) }
 //    val quantityInBox = remember { mutableStateOf(TextFieldValue("10")) }
 //    val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
