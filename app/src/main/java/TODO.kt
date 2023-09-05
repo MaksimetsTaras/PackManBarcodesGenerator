@@ -6,3 +6,4 @@
 
 //Not needed - TODO Image refreshes, when some values increments or decrements
 //Done - TODO Not always SW and HW present. Need checkbox. If check box enabled, use this check box
+//Передавати в compose об'єкт, а не змінні

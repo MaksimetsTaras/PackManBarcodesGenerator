@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,14 +39,21 @@ import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit) {
+fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit,
+              article: MutableState<TextFieldValue>,
+              index: MutableState<TextFieldValue>,
+              packaging: MutableState<TextFieldValue>,
+              quantityInBox: MutableState<TextFieldValue>,
+              batchNumber: MutableState<TextFieldValue>,
+              customerArticle: MutableState<TextFieldValue>
+) {
 
-    val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
-    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
-    val index = remember { mutableStateOf(TextFieldValue("00")) }
-    val quantityInBox = remember { mutableStateOf(TextFieldValue("10")) }
-    val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
-    val customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
+//    val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
+//    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
+//    val index = remember { mutableStateOf(TextFieldValue("00")) }
+//    val quantityInBox = remember { mutableStateOf(TextFieldValue("10")) }
+//    val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
+//    val customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
 
     val qrCode = remember {
         mutableStateOf(

@@ -43,6 +43,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
@@ -59,7 +60,19 @@ import com.example.packmanbarcodesgenerator.screens.PartScreen
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
-
+    //JOINT
+    var article = remember { mutableStateOf(TextFieldValue("10544017")) }
+    var index = remember { mutableStateOf(TextFieldValue("00")) }
+    var customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
+    //BOX
+    val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
+    val quantityInBox = remember { mutableStateOf(TextFieldValue("10")) }
+    val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
+    //PART
+    var HWversionPART = remember { mutableStateOf(TextFieldValue("21.1")) }
+    var SWversionPART = remember { mutableStateOf(TextFieldValue("8.1")) }
+    var serialNumberPART = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
+    //OTHER
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
 
@@ -178,8 +191,28 @@ fun MainScreen() {
                     .fillMaxSize()
                     .padding(bottom = bottomNavHeight + (bottomNavHeight / 2))
             ) {
-                composable("Box") { BoxScreen(setFabOnClick = setFabOnClick) }
-                composable("Part") { PartScreen(setFabOnClick = setFabOnClick) }
+                composable("Box") {
+                    BoxScreen(
+                        setFabOnClick = setFabOnClick,
+                        article,
+                        index,
+                        packaging,
+                        quantityInBox,
+                        batchNumber,
+                        customerArticle
+                    )
+                }
+                composable("Part") {
+                    PartScreen(
+                        setFabOnClick = setFabOnClick,
+                        article,
+                        index,
+                        customerArticle,
+                        HWversionPART,
+                        SWversionPART,
+                        serialNumberPART
+                    )
+                }
             }
         }
     }

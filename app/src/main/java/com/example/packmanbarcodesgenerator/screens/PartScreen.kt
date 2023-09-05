@@ -53,14 +53,22 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
+fun PartScreen(
+    setFabOnClick: (() -> Unit) -> Unit,
+    article: MutableState<TextFieldValue>,
+    index: MutableState<TextFieldValue>,
+    customerArticle: MutableState<TextFieldValue>,
+    HWversion: MutableState<TextFieldValue>,
+    SWversion: MutableState<TextFieldValue>,
+    serialNumber: MutableState<TextFieldValue>
+) {
 
-    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
-    val index = remember { mutableStateOf(TextFieldValue("00")) }
-    val customerNumber = remember { mutableStateOf(TextFieldValue("A1749055601")) }
-    val HWversion = remember { mutableStateOf(TextFieldValue("21.1")) }
-    val SWversion = remember { mutableStateOf(TextFieldValue("8.1")) }
-    val serialNumber = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
+//    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
+//    val index = remember { mutableStateOf(TextFieldValue("00")) }
+//    val customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
+//    val HWversion = remember { mutableStateOf(TextFieldValue("21.1")) }
+//    val SWversion = remember { mutableStateOf(TextFieldValue("8.1")) }
+//    val serialNumber = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
 
     val switchCheckedStateHWversion = remember { mutableStateOf(false) }
     val switchCheckedStateSWversion = remember { mutableStateOf(false) }
@@ -82,7 +90,7 @@ fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
             qrCode.value = generate_PartQRcode(
                 article.value.text,
                 index.value.text,
-                customerNumber.value.text,
+                customerArticle.value.text,
                 HWversion.value.text,
                 SWversion.value.text,
                 serialNumber.value.text,
@@ -153,7 +161,7 @@ fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
                 )
 
                 TextField_withButtons(
-                    element = customerNumber,
+                    element = customerArticle,
                     modifier = Modifier,
                     labelValue = "Артикль замовника",
                     TypesOfInput.text
@@ -178,7 +186,10 @@ fun PartScreen(setFabOnClick: (() -> Unit) -> Unit) {
                 }
 
                 TextField_withButtons(
-                    element = serialNumber, modifier = Modifier, labelValue = "Серійний номер", TypesOfInput.text
+                    element = serialNumber,
+                    modifier = Modifier,
+                    labelValue = "Серійний номер",
+                    TypesOfInput.text
                 )
 
             }
