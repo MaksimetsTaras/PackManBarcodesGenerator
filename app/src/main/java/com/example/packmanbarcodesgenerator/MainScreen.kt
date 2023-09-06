@@ -67,8 +67,6 @@ import com.google.gson.Gson
 @Composable
 fun MainScreen() {
     //JOINT
-    var articleWWW = remember { mutableStateOf(String) }
-
     var article = remember { mutableStateOf(TextFieldValue("10544017")) }
     var index = remember { mutableStateOf(TextFieldValue("00")) }
     var customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
@@ -124,37 +122,22 @@ fun MainScreen() {
                         val iconSave = painterResource(id = R.drawable.load)
 
                         IconButton(onClick = {
-
                             val activeBottomItem: String =
                                 backStackEntry.value?.destination?.route.toString()
 
-//                            makeToast(context, activeBottomItem)
-//
                             if (activeBottomItem == "Box") {
-                                var currentBox = loadFromSharedPreferences(context)
+                                //TODO спочатку перевірити чи є щось завантажити
+                                val currentBox = loadFromSharedPreferences(context)
 
-                                val text = currentBox.article
-                                article.value = article.value.copy(
-                                    annotatedString = AnnotatedString("sss", ParagraphStyle(null)),
-                                    selection = TextRange(0, text.length),
-                                    composition = TextRange(0, text.length)
-                                )
+                                setValueToMutableInstance(article, currentBox.article)
 
 
-                            } else {
+                            } else if (activeBottomItem == "Part"){
+                                val currentBox = loadFromSharedPreferences(context)
 
+                                setValueToMutableInstance(article, currentBox.article)
                             }
 
-//                            val currentBox = BoxQRcode(
-//                                packaging.value.toString(),
-//                                article.value.toString(),
-//                                index.value.toString(),
-//                                quantityInBox.value.toString(),
-//                                batchNumber.value.toString(),
-//                                customerArticle.value.toString()
-//                            )
-//
-//                            saveToSharedPreferences(context, currentBox)
                         }) {
                             Icon(painter = iconSave, contentDescription = null)
                         }
@@ -166,12 +149,12 @@ fun MainScreen() {
                             makeToast(context, "Save")
 
                             val currentBox = BoxQRcode(
-                                packaging.value.toString(),
-                                article.value.toString(),
-                                index.value.toString(),
-                                quantityInBox.value.toString(),
-                                batchNumber.value.toString(),
-                                customerArticle.value.toString()
+                                packaging.value.text,
+                                article.value.text,
+                                index.value.text,
+                                quantityInBox.value.text,
+                                batchNumber.value.text,
+                                customerArticle.value.text
                             )
 
                             saveToSharedPreferences(context, currentBox)
@@ -302,4 +285,12 @@ fun loadFromSharedPreferences(ctx: Context): BoxQRcode {
     val box: BoxQRcode = gson.fromJson(boxString, BoxQRcode::class.java)
 
     return box
+}
+
+fun setValueToMutableInstance(element: MutableState<TextFieldValue>, valueToWrite: String) {
+    element.value = element.value.copy(
+        annotatedString = AnnotatedString(valueToWrite, ParagraphStyle(null)),
+//        selection = TextRange(0, text.length),
+//        composition = TextRange(0, text.length)
+    )
 }
