@@ -6,16 +6,21 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Button
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.Add
@@ -47,6 +52,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -60,6 +66,7 @@ import androidx.navigation.compose.rememberNavController
 import barcodeGenerator.BoxQRcode
 import com.example.packmanbarcodesgenerator.screens.BoxScreen
 import com.example.packmanbarcodesgenerator.screens.PartScreen
+import com.example.packmanbarcodesgenerator.uiElements.CustomAlertDialog
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,6 +96,8 @@ fun MainScreen() {
     val context = LocalContext.current
 
     val (fabOnClick, setFabOnClick) = remember { mutableStateOf<(() -> Unit)?>(null) }
+
+    val openDialog = remember { mutableStateOf(false) }
 
     Box {
         Image(
@@ -125,14 +134,19 @@ fun MainScreen() {
                             val activeBottomItem: String =
                                 backStackEntry.value?.destination?.route.toString()
 
+
                             if (activeBottomItem == "Box") {
+
+                                //TODO sss
+                                openDialog.value = true
+
                                 //TODO спочатку перевірити чи є щось завантажити
                                 val currentBox = loadFromSharedPreferences(context)
 
                                 setValueToMutableInstance(article, currentBox.article)
 
 
-                            } else if (activeBottomItem == "Part"){
+                            } else if (activeBottomItem == "Part") {
                                 val currentBox = loadFromSharedPreferences(context)
 
                                 setValueToMutableInstance(article, currentBox.article)
@@ -140,6 +154,10 @@ fun MainScreen() {
 
                         }) {
                             Icon(painter = iconSave, contentDescription = null)
+                        }
+
+                        if (openDialog.value){
+                            CustomAlertDialog(openDialog)
                         }
                     },
                     actions = {
@@ -271,6 +289,8 @@ fun saveToSharedPreferences(ctx: Context, currentBox: BoxQRcode) {
     val gson = Gson()
     val json: String = gson.toJson(currentBox)
 
+    //TODO here is to save one more record to the list
+
     myShared.saveBoxValues(json)
 
 }
@@ -282,6 +302,8 @@ fun loadFromSharedPreferences(ctx: Context): BoxQRcode {
 
     val gson = Gson()
 
+    //TODO here is to receive the list of records
+    //TODO list should be displayed on AlarmDIalog
     val box: BoxQRcode = gson.fromJson(boxString, BoxQRcode::class.java)
 
     return box
