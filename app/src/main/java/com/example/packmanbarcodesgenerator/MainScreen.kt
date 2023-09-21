@@ -4,26 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Button
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material.TextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,14 +23,13 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -48,16 +37,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.toColor
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -66,7 +49,7 @@ import androidx.navigation.compose.rememberNavController
 import barcodeGenerator.BoxQRcode
 import com.example.packmanbarcodesgenerator.screens.BoxScreen
 import com.example.packmanbarcodesgenerator.screens.PartScreen
-import com.example.packmanbarcodesgenerator.uiElements.CustomAlertDialog
+import com.example.packmanbarcodesgenerator.uiElements.CustomListView.CustomAlertDialog
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,6 +82,8 @@ fun MainScreen() {
 
     val openDialog = remember { mutableStateOf(false) }
 
+    val listOfCheckedItems = remember { mutableStateListOf<Int>() }
+
     Box {
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -106,7 +91,6 @@ fun MainScreen() {
             contentDescription = "background_image",
             contentScale = ContentScale.FillBounds
         )
-
         Scaffold(
             modifier = Modifier
                 .fillMaxSize(),
@@ -156,8 +140,11 @@ fun MainScreen() {
                             Icon(painter = iconSave, contentDescription = null)
                         }
 
-                        if (openDialog.value){
-                            CustomAlertDialog(openDialog)
+                        val activeBottomItem: String =
+                            backStackEntry.value?.destination?.route.toString()
+
+                        if (openDialog.value) {
+                            CustomAlertDialog(openDialog, activeBottomItem, listOfCheckedItems)
                         }
                     },
                     actions = {
