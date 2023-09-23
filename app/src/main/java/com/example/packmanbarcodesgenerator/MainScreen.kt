@@ -22,6 +22,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -41,15 +42,18 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import barcodeGenerator.BoxQRcode
+import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.screens.BoxScreen
 import com.example.packmanbarcodesgenerator.screens.PartScreen
 import com.example.packmanbarcodesgenerator.uiElements.CustomListView.CustomAlertDialog
+import com.example.packmanbarcodesgenerator.uiElements.CustomListView.RecordDataClass
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,17 +61,17 @@ import com.google.gson.Gson
 @Composable
 fun MainScreen() {
     //JOINT
-    var article = remember { mutableStateOf(TextFieldValue("10544017")) }
-    var index = remember { mutableStateOf(TextFieldValue("00")) }
-    var customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
+    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
+    val index = remember { mutableStateOf(TextFieldValue("00")) }
+    val customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
     //BOX
     val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
     val quantityInBox = remember { mutableStateOf(TextFieldValue("10")) }
     val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
     //PART
-    var HWversionPART = remember { mutableStateOf(TextFieldValue("21.1")) }
-    var SWversionPART = remember { mutableStateOf(TextFieldValue("8.1")) }
-    var serialNumberPART = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
+    val HWversionPART = remember { mutableStateOf(TextFieldValue("21.1")) }
+    val SWversionPART = remember { mutableStateOf(TextFieldValue("8.1")) }
+    val serialNumberPART = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
     //OTHER
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
@@ -83,6 +87,8 @@ fun MainScreen() {
     val openDialog = remember { mutableStateOf(false) }
 
     val listOfCheckedItems = remember { mutableStateListOf<Int>() }
+
+    var listOfRecords: ArrayList<RecordDataClass> = ArrayList<RecordDataClass>()
 
     Box {
         Image(
@@ -115,56 +121,68 @@ fun MainScreen() {
                         val iconSave = painterResource(id = R.drawable.load)
 
                         IconButton(onClick = {
-                            val activeBottomItem: String =
-                                backStackEntry.value?.destination?.route.toString()
-
-
-                            if (activeBottomItem == "Box") {
-
-                                //TODO sss
-                                openDialog.value = true
-
-                                //TODO спочатку перевірити чи є щось завантажити
-                                val currentBox = loadFromSharedPreferences(context)
-
-                                setValueToMutableInstance(article, currentBox.article)
-
-
-                            } else if (activeBottomItem == "Part") {
-                                val currentBox = loadFromSharedPreferences(context)
-
-                                setValueToMutableInstance(article, currentBox.article)
-                            }
-
+                            openDialog.value = true
                         }) {
                             Icon(painter = iconSave, contentDescription = null)
                         }
 
-                        val activeBottomItem: String =
-                            backStackEntry.value?.destination?.route.toString()
+                        val activeBottomItem: String = getActiveBottomItem(backStackEntry)
+
+                        if (activeBottomItem == BottomItems.Box.name) {
+                            listOfRecords =
+                                loadFromSharedPreferences(context, BottomItems.Box.name)
+                        } else if (activeBottomItem == BottomItems.Part.name) {
+                            listOfRecords =
+                                loadFromSharedPreferences(context, BottomItems.Part.name)
+                        }
+
+                        if ( openDialog.value and (listOfRecords.count() == 0)){
+                            makeToast(context, "Не має елементів для завантаження")
+                            openDialog.value = false
+                        }
 
                         if (openDialog.value) {
-                            CustomAlertDialog(openDialog, activeBottomItem, listOfCheckedItems)
+                            CustomAlertDialog(
+                                openDialog,
+                                listOfRecords,
+                                activeBottomItem,
+                                listOfCheckedItems
+                            )
                         }
                     },
                     actions = {
-                        val iconSave = painterResource(id = R.drawable.save)
-
                         IconButton(onClick = {
+                            val activeBottomItem: String = getActiveBottomItem(backStackEntry)
+
+                            if (activeBottomItem == BottomItems.Box.name) {
+                                val datatForBox = BoxQRcode(
+                                    packaging.value.text,
+                                    article.value.text,
+                                    index.value.text,
+                                    quantityInBox.value.text,
+                                    batchNumber.value.text,
+                                    customerArticle.value.text
+                                )
+                                saveToSharedPreferences(context, dataBox = datatForBox)
+
+                            } else if (activeBottomItem == BottomItems.Part.name) {
+                                val dataForPart = PartQRcode(
+                                    article.value.text,
+                                    index.value.text,
+                                    customerArticle.value.text,
+                                    HWversionPART.value.text,
+                                    SWversionPART.value.text,
+                                    serialNumberPART.value.text,
+                                    isHWpresent = false, isSWpresent = false
+                                )
+                                saveToSharedPreferences(context, dataPart = dataForPart)
+                            }
                             makeToast(context, "Save")
-
-                            val currentBox = BoxQRcode(
-                                packaging.value.text,
-                                article.value.text,
-                                index.value.text,
-                                quantityInBox.value.text,
-                                batchNumber.value.text,
-                                customerArticle.value.text
-                            )
-
-                            saveToSharedPreferences(context, currentBox)
                         }) {
-                            Icon(painter = iconSave, contentDescription = null)
+                            Icon(
+                                painter = painterResource(id = R.drawable.save),
+                                contentDescription = null
+                            )
                         }
 //                    IconButton(onClick = { makeToast(context, "Save") }) {
 //                        Icon(painter = icon2, contentDescription = null)
@@ -189,11 +207,10 @@ fun MainScreen() {
                         }
                 ) {
 
-                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val currentDestination = navBackStackEntry?.destination
+//                    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                     bottomNavItems.forEach { it ->
-                        val selected = it.route == backStackEntry.value?.destination?.route
+                        val selected = it.route == getActiveBottomItem(backStackEntry)
 
                         BottomNavigationItem(
                             selected = selected,
@@ -270,30 +287,45 @@ fun makeToast(ctx: Context, msg: String) {
     Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
 }
 
-fun saveToSharedPreferences(ctx: Context, currentBox: BoxQRcode) {
+fun saveToSharedPreferences(
+    ctx: Context,
+    dataBox: BoxQRcode = BoxQRcode("", "", "", "", "", ""),
+    dataPart: PartQRcode = PartQRcode("", "", "", "", "", "", false, false)
+) {
     val myShared = mySharedPreferences.mySharedPreferences(ctx)
-
     val gson = Gson()
-    val json: String = gson.toJson(currentBox)
 
-    //TODO here is to save one more record to the list
+    var json = ""
+    var key = ""
+    if (dataBox.article.isNotEmpty()) {
+        json = gson.toJson(dataBox)
+        key = BottomItems.Box.name
+    } else if (dataPart.article.isNotEmpty()) {
+        json = gson.toJson(dataPart)
+        key = BottomItems.Part.name
+    }
 
-    myShared.saveBoxValues(json)
-
+    myShared.saveRecord(key, json)
 }
 
-fun loadFromSharedPreferences(ctx: Context): BoxQRcode {
+fun loadFromSharedPreferences(ctx: Context, activeBottomItem: String): ArrayList<RecordDataClass> {
     val myShared = mySharedPreferences.mySharedPreferences(ctx)
 
-    val boxString: String = myShared.getPersNumber()
+    var allNeededRecords = mutableListOf<String>()
+    if (activeBottomItem == BottomItems.Box.name) {
+        allNeededRecords = myShared.getAllRecordsStartsWith(BottomItems.Box.name)
+    } else if (activeBottomItem == BottomItems.Part.name) {
+        allNeededRecords = myShared.getAllRecordsStartsWith(BottomItems.Part.name)
+    }
 
     val gson = Gson()
 
-    //TODO here is to receive the list of records
-    //TODO list should be displayed on AlarmDIalog
-    val box: BoxQRcode = gson.fromJson(boxString, BoxQRcode::class.java)
-
-    return box
+    val result: ArrayList<RecordDataClass> = ArrayList<RecordDataClass>()
+    for (record in allNeededRecords) {
+        val convertedRecord: RecordDataClass = gson.fromJson(record, RecordDataClass::class.java)
+        result.add(convertedRecord)
+    }
+    return result
 }
 
 fun setValueToMutableInstance(element: MutableState<TextFieldValue>, valueToWrite: String) {
@@ -302,4 +334,12 @@ fun setValueToMutableInstance(element: MutableState<TextFieldValue>, valueToWrit
 //        selection = TextRange(0, text.length),
 //        composition = TextRange(0, text.length)
     )
+}
+
+fun getActiveBottomItem(backStackEntry: State<NavBackStackEntry?>): String {
+    return backStackEntry.value?.destination?.route.toString()
+}
+
+enum class BottomItems() {
+    Box, Part
 }

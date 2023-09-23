@@ -200,7 +200,7 @@ fun PartScreen(
 fun generate_PartQRcode(
     article: String,
     index: String,
-    customerNumber: String,
+    customerArticle: String,
     HWversion: String,
     SWversion: String,
     serialNumber: String,
@@ -210,7 +210,7 @@ fun generate_PartQRcode(
     val partInfoForQRcode = PartQRcode(
         article = article,
         index = index,
-        customerNumber = customerNumber,
+        customerArticle = customerArticle,
         HWversion = HWversion,
         SWversion = SWversion,
         serialNumber = serialNumber,
@@ -230,7 +230,7 @@ fun multipleColorsInText(
 
     //  /Pxxx/3OSxxx/HWxxx/SWxxx/SNxxx
 
-    var result: AnnotatedString = buildAnnotatedString {
+    val result: AnnotatedString = buildAnnotatedString {
         //Customer
         withStyle(style = SpanStyle(color = Color.Red)) {
             append("/P")
@@ -251,7 +251,7 @@ fun multipleColorsInText(
 
         //HW
 
-        if (HWelement.value == true) {
+        if (HWelement.value) {
             withStyle(style = SpanStyle(color = Color.Red)) {
                 append("/HW")
             }
@@ -261,7 +261,7 @@ fun multipleColorsInText(
             }
         }
         //SW
-        if (SWelement.value == true) {
+        if (SWelement.value) {
             withStyle(style = SpanStyle(color = Color.Red)) {
                 append("/SW")
             }
