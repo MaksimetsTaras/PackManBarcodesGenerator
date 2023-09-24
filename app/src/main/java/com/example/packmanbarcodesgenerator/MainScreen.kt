@@ -73,6 +73,18 @@ fun MainScreen() {
     val SWversionPART = remember { mutableStateOf(TextFieldValue("8.1")) }
     val serialNumberPART = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
     //OTHER
+    val recordSaved = remember {
+        mutableStateOf(
+            RecordDataClass(
+                article.value.text,
+                index.value.text,
+                customerArticle.value.text,
+                HWversionPART.value.text,
+                SWversionPART.value.text
+            )
+        )
+    }
+
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
 
@@ -88,7 +100,7 @@ fun MainScreen() {
 
     val listOfCheckedItems = remember { mutableStateListOf<Int>() }
 
-    var listOfRecords: ArrayList<RecordDataClass> = ArrayList<RecordDataClass>()
+    var listOfRecords: ArrayList<RecordDataClass> = ArrayList()
 
     Box {
         Image(
@@ -136,17 +148,19 @@ fun MainScreen() {
                                 loadFromSharedPreferences(context, BottomItems.Part.name)
                         }
 
-                        if ( openDialog.value and (listOfRecords.count() == 0)){
+                        if (openDialog.value and (listOfRecords.isEmpty())) {
                             makeToast(context, "Не має елементів для завантаження")
                             openDialog.value = false
                         }
 
                         if (openDialog.value) {
+                            listOfCheckedItems.clear()
                             CustomAlertDialog(
                                 openDialog,
                                 listOfRecords,
-                                activeBottomItem,
-                                listOfCheckedItems
+                                listOfCheckedItems,
+                                recordSaved,
+                                context
                             )
                         }
                     },
