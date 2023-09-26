@@ -61,29 +61,36 @@ import com.google.gson.Gson
 @Composable
 fun MainScreen() {
     //JOINT
-    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
-    val index = remember { mutableStateOf(TextFieldValue("00")) }
-    val customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
+    val article = remember { mutableStateOf("10544017") }
+    val index = remember { mutableStateOf("00") }
+    val customerArticle = remember { mutableStateOf("A1749055601") }
     //BOX
-    val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
-    val quantityInBox = remember { mutableStateOf(TextFieldValue("10")) }
-    val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
+    val packaging = remember { mutableStateOf("453940087") }
+    val quantityInBox = remember { mutableStateOf("10") }
+    val batchNumber = remember { mutableStateOf("720716") }
     //PART
-    val HWversionPART = remember { mutableStateOf(TextFieldValue("21.1")) }
-    val SWversionPART = remember { mutableStateOf(TextFieldValue("8.1")) }
-    val serialNumberPART = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
+    val HWversionPART = remember { mutableStateOf("21.1") }
+    val SWversionPART = remember { mutableStateOf("8.1") }
+    val serialNumberPART = remember { mutableStateOf("94288WGI00081") }
     //OTHER
-    val recordSaved = remember {
-        mutableStateOf(
-            RecordDataClass(
-                article.value.text,
-                index.value.text,
-                customerArticle.value.text,
-                HWversionPART.value.text,
-                SWversionPART.value.text
-            )
-        )
-    }
+
+    val fieldsForPart = mapOf(
+        "article" to article,
+        "index" to index,
+        "customerArticle" to customerArticle,
+        "HWversionPART" to HWversionPART,
+        "SWversionPART" to SWversionPART,
+        "serialNumberPART" to serialNumberPART
+    )
+
+    val fieldsForBox = mapOf(
+        "article" to article,
+        "index" to index,
+        "customerArticle" to customerArticle,
+        "packaging" to packaging,
+        "quantityInBox" to quantityInBox,
+        "batchNumber" to batchNumber
+    )
 
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
@@ -137,29 +144,40 @@ fun MainScreen() {
                         }) {
                             Icon(painter = iconSave, contentDescription = null)
                         }
+                        if (openDialog.value) {
 
-                        val activeBottomItem: String = getActiveBottomItem(backStackEntry)
+                            //Download
+                            val activeBottomItem: String = getActiveBottomItem(backStackEntry)
 
-                        if (activeBottomItem == BottomItems.Box.name) {
-                            listOfRecords =
-                                loadFromSharedPreferences(context, BottomItems.Box.name)
-                        } else if (activeBottomItem == BottomItems.Part.name) {
-                            listOfRecords =
-                                loadFromSharedPreferences(context, BottomItems.Part.name)
-                        }
+                            if (activeBottomItem == BottomItems.Box.name) {
+                                listOfRecords =
+                                    loadFromSharedPreferences(context, BottomItems.Box.name)
+                            } else if (activeBottomItem == BottomItems.Part.name) {
+                                listOfRecords =
+                                    loadFromSharedPreferences(context, BottomItems.Part.name)
+                            }
 
-                        if (openDialog.value and (listOfRecords.isEmpty())) {
-                            makeToast(context, "Не має елементів для завантаження")
-                            openDialog.value = false
+                            //CHECK
+                            if (listOfRecords.isEmpty()) {
+                                makeToast(context, "Не має елементів для завантаження")
+                                openDialog.value = false
+                            } else {
+//                                article.value = listOfRecords[1].article
+//                                index.value = listOfRecords[1].index
+//                                customerArticle.value = listOfRecords[1].customerArticle
+                            }
                         }
 
                         if (openDialog.value) {
                             listOfCheckedItems.clear()
+                            val activeBottomItem: String = getActiveBottomItem(backStackEntry)
                             CustomAlertDialog(
                                 openDialog,
+                                activeBottomItem,
+                                fieldsForPart = fieldsForPart,
+                                fieldsForBox = fieldsForBox,
                                 listOfRecords,
                                 listOfCheckedItems,
-                                recordSaved,
                                 context
                             )
                         }
@@ -169,24 +187,24 @@ fun MainScreen() {
                             val activeBottomItem: String = getActiveBottomItem(backStackEntry)
 
                             if (activeBottomItem == BottomItems.Box.name) {
-                                val datatForBox = BoxQRcode(
-                                    packaging.value.text,
-                                    article.value.text,
-                                    index.value.text,
-                                    quantityInBox.value.text,
-                                    batchNumber.value.text,
-                                    customerArticle.value.text
+                                val dataForBox = BoxQRcode(
+                                    packaging.value,
+                                    article.value,
+                                    index.value,
+                                    quantityInBox.value,
+                                    batchNumber.value,
+                                    customerArticle.value
                                 )
-                                saveToSharedPreferences(context, dataBox = datatForBox)
+                                saveToSharedPreferences(context, dataBox = dataForBox)
 
                             } else if (activeBottomItem == BottomItems.Part.name) {
                                 val dataForPart = PartQRcode(
-                                    article.value.text,
-                                    index.value.text,
-                                    customerArticle.value.text,
-                                    HWversionPART.value.text,
-                                    SWversionPART.value.text,
-                                    serialNumberPART.value.text,
+                                    article.value,
+                                    index.value,
+                                    customerArticle.value,
+                                    HWversionPART.value,
+                                    SWversionPART.value,
+                                    serialNumberPART.value,
                                     isHWpresent = false, isSWpresent = false
                                 )
                                 saveToSharedPreferences(context, dataPart = dataForPart)

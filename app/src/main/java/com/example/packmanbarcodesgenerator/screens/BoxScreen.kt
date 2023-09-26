@@ -40,12 +40,12 @@ import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit,
-              article: MutableState<TextFieldValue>,
-              index: MutableState<TextFieldValue>,
-              packaging: MutableState<TextFieldValue>,
-              quantityInBox: MutableState<TextFieldValue>,
-              batchNumber: MutableState<TextFieldValue>,
-              customerArticle: MutableState<TextFieldValue>
+              article: MutableState<String>,
+              index: MutableState<String>,
+              packaging: MutableState<String>,
+              quantityInBox: MutableState<String>,
+              batchNumber: MutableState<String>,
+              customerArticle: MutableState<String>
 ) {
 
 //    val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
@@ -69,12 +69,12 @@ fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit,
 
     LaunchedEffect(Unit) {
         setFabOnClick {  qrCode.value = generate_BoxQRcode(
-            packaging.value.text,
-            article.value.text,
-            index.value.text,
-            quantityInBox.value.text,
-            batchNumber.value.text,
-            customerArticle.value.text
+            packaging.value,
+            article.value,
+            index.value,
+            quantityInBox.value,
+            batchNumber.value,
+            customerArticle.value
         ) }
     }
 

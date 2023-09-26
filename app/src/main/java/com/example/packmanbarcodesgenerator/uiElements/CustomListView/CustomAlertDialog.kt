@@ -16,15 +16,19 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.packmanbarcodesgenerator.BottomItems
+import com.example.packmanbarcodesgenerator.bottomNavItem
 import com.example.packmanbarcodesgenerator.makeToast
 
 @SuppressLint("RememberReturnType")
 @Composable
 fun CustomAlertDialog(
     state: MutableState<Boolean>,
+    activeBottomItem: String,
+    fieldsForPart: Map<String, MutableState<String>>,
+    fieldsForBox: Map<String, MutableState<String>>,
     listOfRecords: List<RecordDataClass>,
     listOfCheckedItems: SnapshotStateList<Int>,
-    recordSaved: MutableState<RecordDataClass>,
     context: Context
 ) {
 
@@ -54,7 +58,20 @@ fun CustomAlertDialog(
                                 listOfCheckedItems.clear()
                                 makeToast(context, "Оберіть ОДИН елемент")
                             } else {
-                                recordSaved.value = listOfRecords[listOfCheckedItems[0]]
+                                val chosenRecord = listOfRecords[listOfCheckedItems[0]]
+
+                                //Joint fields
+                                fieldsForPart["article"]?.value = chosenRecord.article
+                                fieldsForPart["index"]?.value = chosenRecord.index
+                                fieldsForPart["customerArticle"]?.value =
+                                    chosenRecord.customerArticle
+
+                                if (activeBottomItem == BottomItems.Part.name) {
+
+                                } else if (activeBottomItem == BottomItems.Box.name) {
+
+                                }
+
                                 state.value = false
                             }
                         }

@@ -39,7 +39,7 @@ import nextNumberTool.NextNumberTool
 
 @Composable
 fun TextField_withButtons(
-    element: MutableState<TextFieldValue>,
+    element: MutableState<String>,
     modifier: Modifier,
     labelValue: String,
     typeOfInput: TypesOfInput
@@ -53,7 +53,7 @@ fun TextField_withButtons(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         TextField(
-            element.value,
+            value = element.value,
             onValueChange = { text -> element.value = text },
             textStyle = TextStyle(
                 fontSize = 20.sp, textAlign = TextAlign.Left, background = Color.Transparent,
@@ -72,10 +72,10 @@ fun TextField_withButtons(
                 if (it.hasFocus) {
                     scope.launch {
                         delay(10)
-                        val text = element.value.text
-                        element.value = element.value.copy(
-                            selection = TextRange(0, text.length)
-                        )
+                        val text = element.value
+//                        element.value = element.value.copy(
+//                            selection = TextRange(0, text.length)
+//                        )
                     }
                 }
             },
@@ -117,14 +117,14 @@ fun TextField_withButtons(
 
                         if (typeOfInput == TypesOfInput.integer) {
                             decrementedValue =
-                                decrementValue(element.value.text, TypesOfInput.integer)
+                                decrementValue(element.value, TypesOfInput.integer)
                         } else if (typeOfInput == TypesOfInput.text) {
-                            decrementedValue = decrementValue(element.value.text, TypesOfInput.text)
+                            decrementedValue = decrementValue(element.value, TypesOfInput.text)
                         } else {
-                            decrementedValue = decrementValue(element.value.text, TypesOfInput.text)
+                            decrementedValue = decrementValue(element.value, TypesOfInput.text)
                         }
 
-                        element.value = TextFieldValue(decrementedValue)
+                        element.value = decrementedValue
                     })
 
             Image(painter = painterResource(id = R.drawable.plus),
@@ -138,14 +138,14 @@ fun TextField_withButtons(
 
                         if (typeOfInput == TypesOfInput.integer) {
                             incrementedValue =
-                                incrementValue(element.value.text, TypesOfInput.integer)
+                                incrementValue(element.value, TypesOfInput.integer)
                         } else if (typeOfInput == TypesOfInput.text) {
-                            incrementedValue = incrementValue(element.value.text, TypesOfInput.text)
+                            incrementedValue = incrementValue(element.value, TypesOfInput.text)
                         } else {
-                            incrementedValue = incrementValue(element.value.text, TypesOfInput.text)
+                            incrementedValue = incrementValue(element.value, TypesOfInput.text)
                         }
 
-                        element.value = TextFieldValue(incrementedValue)
+                        element.value = incrementedValue
                     })
         }
     }

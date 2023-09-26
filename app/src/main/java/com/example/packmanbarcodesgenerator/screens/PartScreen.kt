@@ -55,12 +55,12 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
 fun PartScreen(
     setFabOnClick: (() -> Unit) -> Unit,
-    article: MutableState<TextFieldValue>,
-    index: MutableState<TextFieldValue>,
-    customerArticle: MutableState<TextFieldValue>,
-    HWversion: MutableState<TextFieldValue>,
-    SWversion: MutableState<TextFieldValue>,
-    serialNumber: MutableState<TextFieldValue>
+    article: MutableState<String>,
+    index: MutableState<String>,
+    customerArticle: MutableState<String>,
+    HWversion: MutableState<String>,
+    SWversion: MutableState<String>,
+    serialNumber: MutableState<String>
 ) {
 
 //    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
@@ -88,12 +88,12 @@ fun PartScreen(
     LaunchedEffect(Unit) {
         setFabOnClick {
             qrCode.value = generate_PartQRcode(
-                article.value.text,
-                index.value.text,
-                customerArticle.value.text,
-                HWversion.value.text,
-                SWversion.value.text,
-                serialNumber.value.text,
+                article.value,
+                index.value,
+                customerArticle.value,
+                HWversion.value,
+                SWversion.value,
+                serialNumber.value,
                 switchCheckedStateHWversion.value,
                 switchCheckedStateSWversion.value,
             )
