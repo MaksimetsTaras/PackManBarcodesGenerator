@@ -4,6 +4,7 @@
 //VW_DPC -  /P6V2959857A     /3OS10130926-04             /SN93266WGO00011
 
 
-//Not needed - TODO Image refreshes, when some values increments or decrements
-//Done - TODO Not always SW and HW present. Need checkbox. If check box enabled, use this check box
-//Передавати в compose об'єкт, а не змінні
+// Not needed - TODO Image refreshes, when some values increments or decrements
+// Done - TODO Not always SW and HW present. Need checkbox. If check box enabled, use this check box
+// Передавати в compose об'єкт, а не змінні
+// Зберігати останній обраний артикль, і все інше, для наступного входу

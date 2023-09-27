@@ -63,13 +63,6 @@ fun PartScreen(
     serialNumber: MutableState<String>
 ) {
 
-//    val article = remember { mutableStateOf(TextFieldValue("10544017")) }
-//    val index = remember { mutableStateOf(TextFieldValue("00")) }
-//    val customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
-//    val HWversion = remember { mutableStateOf(TextFieldValue("21.1")) }
-//    val SWversion = remember { mutableStateOf(TextFieldValue("8.1")) }
-//    val serialNumber = remember { mutableStateOf(TextFieldValue("94288WGI00081")) }
-
     val switchCheckedStateHWversion = remember { mutableStateOf(false) }
     val switchCheckedStateSWversion = remember { mutableStateOf(false) }
 
@@ -100,13 +93,11 @@ fun PartScreen(
         }
     }
 
-
-
-
     Scaffold(
         modifier = Modifier.fillMaxSize(), containerColor = Color.Transparent
     ) {
-        Column {
+        Column(modifier = Modifier
+            .fillMaxSize()) {
 
             Row(
                 modifier = Modifier
@@ -130,22 +121,27 @@ fun PartScreen(
                 ), Modifier.fillMaxWidth(), fontSize = 20.sp, textAlign = TextAlign.Center
             )
 
-            Column(
+            Row(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.Bottom
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-
                 Image(
                     bitmap = qrCode.value,
                     contentDescription = "QR code",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
                         .size(150.dp)
-                        .align(Alignment.CenterHorizontally),
                 )
+            }
 
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Bottom
+            ) {
                 TextField_withButtons(
                     element = article,
                     modifier = Modifier,

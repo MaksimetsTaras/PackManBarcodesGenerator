@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
@@ -39,21 +44,15 @@ import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit,
-              article: MutableState<String>,
-              index: MutableState<String>,
-              packaging: MutableState<String>,
-              quantityInBox: MutableState<String>,
-              batchNumber: MutableState<String>,
-              customerArticle: MutableState<String>
+fun BoxScreen(
+    setFabOnClick: (() -> Unit) -> Unit,
+    article: MutableState<String>,
+    index: MutableState<String>,
+    packaging: MutableState<String>,
+    quantityInBox: MutableState<String>,
+    batchNumber: MutableState<String>,
+    customerArticle: MutableState<String>
 ) {
-
-//    val packaging = remember { mutableStateOf(TextFieldValue("453940087")) }
-//    val article = remember { mutableStateOf(TextFieldValue(article.value.toString())) }
-//    val index = remember { mutableStateOf(TextFieldValue("00")) }
-//    val quantityInBox = remember { mutableStateOf(TextFieldValue("10")) }
-//    val batchNumber = remember { mutableStateOf(TextFieldValue("720716")) }
-//    val customerArticle = remember { mutableStateOf(TextFieldValue("A1749055601")) }
 
     val qrCode = remember {
         mutableStateOf(
@@ -68,14 +67,16 @@ fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit,
     }
 
     LaunchedEffect(Unit) {
-        setFabOnClick {  qrCode.value = generate_BoxQRcode(
-            packaging.value,
-            article.value,
-            index.value,
-            quantityInBox.value,
-            batchNumber.value,
-            customerArticle.value
-        ) }
+        setFabOnClick {
+            qrCode.value = generate_BoxQRcode(
+                packaging.value,
+                article.value,
+                index.value,
+                quantityInBox.value,
+                batchNumber.value,
+                customerArticle.value
+            )
+        }
     }
 
     Scaffold(
@@ -86,36 +87,76 @@ fun BoxScreen(setFabOnClick: (() -> Unit) -> Unit,
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.Bottom
+                .verticalScroll(rememberScrollState())
         ) {
-            Image(
-                bitmap = qrCode.value,
-                contentDescription = "QR code",
-                contentScale = ContentScale.FillBounds,
+            Row(
                 modifier = Modifier
-                    .size(150.dp)
-                    .align(Alignment.CenterHorizontally),
-            )
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    bitmap = qrCode.value,
+                    contentDescription = "QR code",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .size(150.dp)
+                        .fillMaxWidth()
+                )
+            }
 
-            TextField_withButtons(element = article, modifier = Modifier, labelValue = "артикль", TypesOfInput.integer)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Column{
 
-            TextField_withButtons(element = index, modifier = Modifier, labelValue = "індекс", TypesOfInput.integer)
+                    TextField_withButtons(
+                        element = article,
+                        modifier = Modifier,
+                        labelValue = "артикль",
+                        TypesOfInput.integer
+                    )
 
-            TextField_withButtons(
-                element = quantityInBox, modifier = Modifier, labelValue = "Кількість в ящику", TypesOfInput.integer
-            )
+                    TextField_withButtons(
+                        element = index,
+                        modifier = Modifier,
+                        labelValue = "індекс",
+                        TypesOfInput.integer
+                    )
 
-            TextField_withButtons(
-                element = customerArticle, modifier = Modifier, labelValue = "Артикль замовника", TypesOfInput.text
-            )
+                    TextField_withButtons(
+                        element = quantityInBox,
+                        modifier = Modifier,
+                        labelValue = "Кількість в ящику",
+                        TypesOfInput.integer
+                    )
 
-            TextField_withButtons(
-                element = packaging, modifier = Modifier, labelValue = "Пакування", TypesOfInput.integer
-            )
+                    TextField_withButtons(
+                        element = customerArticle,
+                        modifier = Modifier,
+                        labelValue = "Артикль замовника",
+                        TypesOfInput.text
+                    )
 
-            TextField_withButtons(element = batchNumber, modifier = Modifier, labelValue = "Бетч", TypesOfInput.text)
+                    TextField_withButtons(
+                        element = packaging,
+                        modifier = Modifier,
+                        labelValue = "Пакування",
+                        TypesOfInput.integer
+                    )
 
+                    TextField_withButtons(
+                        element = batchNumber,
+                        modifier = Modifier,
+                        labelValue = "Бетч",
+                        TypesOfInput.text
+                    )
+                }
+            }
         }
     }
 }
