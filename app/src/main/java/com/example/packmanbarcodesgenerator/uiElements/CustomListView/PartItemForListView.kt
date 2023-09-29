@@ -4,9 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
@@ -70,19 +72,41 @@ fun PartItemForListView(
                 )
             }
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
             ) {
-                Text(text = partItem.customerArticle, textAlign = TextAlign.Center)
-
+                LabelAndText(labelValue = "customer", textValue = partItem.customerArticle)
+            }
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ){
                 if (partItem.HWversion.isNotEmpty()) {
-                    Text(text = partItem.HWversion, textAlign = TextAlign.Center)
+                    LabelAndText(labelValue = "HW", textValue = partItem.HWversion)
                 }
 
+                Spacer(modifier = Modifier.width(20.dp))
+
                 if (partItem.SWversion.isNotEmpty()) {
-                    Text(text = partItem.SWversion, textAlign = TextAlign.Center)
+                    LabelAndText(labelValue = "SW", textValue = partItem.SWversion)
                 }
             }
         }
     }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun PartItemPreview() {
+    val partItem = PartQRcode(
+        "12181454", "03", "254789361R", "23.1", "6.2", "9428812345678",
+        isHWpresent = true,
+        isSWpresent = true
+    )
+
+    val snap: SnapshotStateList<Int> = SnapshotStateList<Int>()
+
+    PartItemForListView(partItem, 1, snap)
 }

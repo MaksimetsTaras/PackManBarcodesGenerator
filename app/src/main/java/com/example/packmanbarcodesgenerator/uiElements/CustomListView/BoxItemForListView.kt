@@ -4,9 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
@@ -19,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barcodeGenerator.BoxQRcode
@@ -27,7 +29,7 @@ import barcodeGenerator.BoxQRcode
 
 @Composable
 fun BoxItemForListView(
-    record: BoxQRcode,
+    boxItem: BoxQRcode,
     indexOfElement: Int = 0,
     listOfCheckedItems: SnapshotStateList<Int> = SnapshotStateList()
 ) {
@@ -62,26 +64,47 @@ fun BoxItemForListView(
         Column {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "key - " + record.article + "-" + record.index,
+                    text = "key - " + boxItem.article + "-" + boxItem.index,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 2.dp, top = 2.dp, bottom = 2.dp)
                 )
             }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Text(text = record.customerArticle, textAlign = TextAlign.Center)
+                Column(modifier = Modifier.fillMaxWidth()) {
 
-//                if (record.HWversion != null) {
-//                    Text(text = record.HWversion, textAlign = TextAlign.Center)
-//                }
-//
-//                if (record.SWversion != null) {
-//                    Text(text = record.SWversion, textAlign = TextAlign.Center)
-//                }
+                    LabelAndText(labelValue = "customer", textValue = boxItem.customerArticle)
+
+                    LabelAndText(labelValue = "HU", textValue = boxItem.packaging)
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        LabelAndText(labelValue = "batch", textValue = boxItem.batchNumber)
+
+                        Spacer(modifier = Modifier.width(20.dp))
+
+                        LabelAndText(labelValue = "Qty", textValue = boxItem.quantityInBox)
+                    }
+                }
             }
         }
     }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun BoxItemPreview() {
+    val boxItem = BoxQRcode(
+        "453940087", "10544017", "00", "450", "720716", "A1749055601"
+    )
+
+    val snap: SnapshotStateList<Int> = SnapshotStateList<Int>()
+
+    BoxItemForListView(boxItem, 1, snap)
 }

@@ -75,7 +75,7 @@ fun MainScreen() {
     val isSWpresent = remember { mutableStateOf(true) }
     //OTHER
 
-    val fieldsForPart= mapOf(
+    val fieldsForPart = mapOf(
         "article" to article,
         "index" to index,
         "customerArticle" to customerArticle,
@@ -83,7 +83,7 @@ fun MainScreen() {
         "SWversionPART" to SWversionPART,
         "serialNumberPART" to serialNumberPART
     )
-    val fieldsForPartHWandSW= mapOf(
+    val fieldsForPartHWandSW = mapOf(
         "isHWpresent" to isHWpresent,
         "isSWpresent" to isSWpresent
     )
@@ -220,8 +220,8 @@ fun MainScreen() {
                                     article.value,
                                     index.value,
                                     customerArticle.value,
-                                    HWversionPART.value,
-                                    SWversionPART.value,
+                                    if (isHWpresent.value) HWversionPART.value else "no",
+                                    if (isSWpresent.value) SWversionPART.value else "no",
                                     serialNumberPART.value,
                                     isHWpresent.value,
                                     isSWpresent.value
