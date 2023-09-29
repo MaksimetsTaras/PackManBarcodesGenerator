@@ -2,10 +2,7 @@ package com.example.packmanbarcodesgenerator.screens
 
 import TextAndSwitch
 import android.annotation.SuppressLint
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,19 +14,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageBitmapConfig
@@ -38,18 +31,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.TypesOfInput
-import com.example.packmanbarcodesgenerator.makeToast
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -60,11 +49,13 @@ fun PartScreen(
     customerArticle: MutableState<String>,
     HWversion: MutableState<String>,
     SWversion: MutableState<String>,
-    serialNumber: MutableState<String>
+    serialNumber: MutableState<String>,
+    isHWpresent: MutableState<Boolean>,
+    isSWpresent: MutableState<Boolean>,
 ) {
 
-    val switchCheckedStateHWversion = remember { mutableStateOf(false) }
-    val switchCheckedStateSWversion = remember { mutableStateOf(false) }
+//    val switchCheckedStateHWversion = remember { mutableStateOf(false) }
+//    val switchCheckedStateSWversion = remember { mutableStateOf(false) }
 
     val qrCode = remember {
         mutableStateOf(
@@ -87,8 +78,8 @@ fun PartScreen(
                 HWversion.value,
                 SWversion.value,
                 serialNumber.value,
-                switchCheckedStateHWversion.value,
-                switchCheckedStateSWversion.value,
+                isHWpresent.value,
+                isSWpresent.value,
             )
         }
     }
@@ -96,8 +87,10 @@ fun PartScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(), containerColor = Color.Transparent
     ) {
-        Column(modifier = Modifier
-            .fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
 
             Row(
                 modifier = Modifier
@@ -106,19 +99,20 @@ fun PartScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextAndSwitch(
-                    "HW", modifier = Modifier.weight(1f), element = switchCheckedStateHWversion
+                    "HW", modifier = Modifier.weight(1f), element = isHWpresent
                 )
                 Spacer(modifier = Modifier.width(20.dp))
 
                 TextAndSwitch(
-                    "SW", modifier = Modifier.weight(1f), element = switchCheckedStateSWversion
+                    "SW", modifier = Modifier.weight(1f), element = isSWpresent
                 )
             }
 
             Text(
-                text = multipleColorsInText(
-                    switchCheckedStateSWversion, switchCheckedStateHWversion
-                ), Modifier.fillMaxWidth(), fontSize = 20.sp, textAlign = TextAlign.Center
+                text = multipleColorsInText(isSWpresent, isHWpresent),
+                Modifier.fillMaxWidth(),
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
             )
 
             Row(
@@ -163,7 +157,7 @@ fun PartScreen(
                     TypesOfInput.text
                 )
 
-                if (switchCheckedStateHWversion.value) {
+                if (isHWpresent.value) {
                     TextField_withButtons(
                         element = HWversion,
                         modifier = Modifier,
@@ -172,7 +166,7 @@ fun PartScreen(
                     )
                 }
 
-                if (switchCheckedStateSWversion.value) {
+                if (isSWpresent.value) {
                     TextField_withButtons(
                         element = SWversion,
                         modifier = Modifier,

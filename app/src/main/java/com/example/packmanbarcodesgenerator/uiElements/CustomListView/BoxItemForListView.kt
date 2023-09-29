@@ -20,14 +20,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import barcodeGenerator.BoxQRcode
 
-@Preview(showBackground = false)
+
 @Composable
 fun BoxItemForListView(
-    record: RecordDataClass = RecordDataClass("10531452", "03", "A741258963"),
+    record: BoxQRcode,
     indexOfElement: Int = 0,
     listOfCheckedItems: SnapshotStateList<Int> = SnapshotStateList()
 ) {
@@ -74,13 +74,13 @@ fun BoxItemForListView(
             ) {
                 Text(text = record.customerArticle, textAlign = TextAlign.Center)
 
-                if (record.HWversion != null) {
-                    Text(text = record.HWversion, textAlign = TextAlign.Center)
-                }
-
-                if (record.SWversion != null) {
-                    Text(text = record.SWversion, textAlign = TextAlign.Center)
-                }
+//                if (record.HWversion != null) {
+//                    Text(text = record.HWversion, textAlign = TextAlign.Center)
+//                }
+//
+//                if (record.SWversion != null) {
+//                    Text(text = record.SWversion, textAlign = TextAlign.Center)
+//                }
             }
         }
     }

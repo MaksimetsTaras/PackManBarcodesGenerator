@@ -16,9 +16,12 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import barcodeGenerator.BoxQRcode
+import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.BottomItems
 import com.example.packmanbarcodesgenerator.bottomNavItem
 import com.example.packmanbarcodesgenerator.makeToast
+import kotlin.reflect.cast
 
 @SuppressLint("RememberReturnType")
 @Composable
@@ -26,8 +29,9 @@ fun CustomAlertDialog(
     state: MutableState<Boolean>,
     activeBottomItem: String,
     fieldsForPart: Map<String, MutableState<String>>,
+    fieldsForPartHWandSW: Map<String, MutableState<Boolean>>,
     fieldsForBox: Map<String, MutableState<String>>,
-    listOfRecords: List<RecordDataClass>,
+    listOfRecords: List<Any>,
     listOfCheckedItems: SnapshotStateList<Int>,
     context: Context
 ) {
@@ -38,9 +42,19 @@ fun CustomAlertDialog(
             title = { Text(text = "Попередньо збережені...") },
             text = {
                 Column() {
+
+                    var neededList: List<Any> = listOfRecords.filterIsInstance<BoxQRcode>()
+                    if (activeBottomItem == BottomItems.Box.name) {
+
+                        neededList = listOfRecords.filterIsInstance<BoxQRcode>()
+
+                    } else if (activeBottomItem == BottomItems.Part.name) {
+                        neededList = listOfRecords.filterIsInstance<PartQRcode>()
+                    }
+
                     CustomListView(
                         context = LocalContext.current,
-                        listOfRecords,
+                        neededList,
                         listOfCheckedItems
                     )
                 }
@@ -58,18 +72,38 @@ fun CustomAlertDialog(
                                 listOfCheckedItems.clear()
                                 makeToast(context, "Оберіть ОДИН елемент")
                             } else {
-                                val chosenRecord = listOfRecords[listOfCheckedItems[0]]
 
-                                //Joint fields
-                                fieldsForPart["article"]?.value = chosenRecord.article
-                                fieldsForPart["index"]?.value = chosenRecord.index
-                                fieldsForPart["customerArticle"]?.value =
-                                    chosenRecord.customerArticle
+                                val neededList: Any
+                                if (activeBottomItem == BottomItems.Box.name) {
+                                    neededList = listOfRecords.filterIsInstance<BoxQRcode>()
 
-                                if (activeBottomItem == BottomItems.Part.name) {
+                                    val chosenRecord = neededList[listOfCheckedItems[0]]
+                                    fieldsForBox["article"]?.value = chosenRecord.article
+                                    fieldsForBox["index"]?.value = chosenRecord.index
+                                    fieldsForBox["packaging"]?.value = chosenRecord.packaging
+                                    fieldsForBox["quantityInBox"]?.value =
+                                        chosenRecord.quantityInBox
+                                    fieldsForBox["batchNumber"]?.value = chosenRecord.batchNumber
+                                    fieldsForBox["customerArticle"]?.value =
+                                        chosenRecord.customerArticle
 
-                                } else if (activeBottomItem == BottomItems.Box.name) {
 
+                                } else if (activeBottomItem == BottomItems.Part.name) {
+                                    val neededList: List<PartQRcode> =
+                                        listOfRecords.filterIsInstance<PartQRcode>()
+
+                                    val chosenRecord = neededList[listOfCheckedItems[0]]
+                                    fieldsForPart["article"]?.value = chosenRecord.article
+                                    fieldsForPart["index"]?.value = chosenRecord.index
+                                    fieldsForPart["customerArticle"]?.value =
+                                        chosenRecord.customerArticle
+                                    fieldsForPart["HWversion"]?.value = chosenRecord.HWversion
+                                    fieldsForPart["SWversion"]?.value = chosenRecord.SWversion
+                                    fieldsForPart["serialNumber"]?.value = chosenRecord.serialNumber
+                                    fieldsForPartHWandSW["isHWpresent"]?.value =
+                                        chosenRecord.isHWpresent
+                                    fieldsForPartHWandSW["isSWpresent"]?.value =
+                                        chosenRecord.isSWpresent
                                 }
 
                                 state.value = false

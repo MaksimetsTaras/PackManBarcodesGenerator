@@ -53,7 +53,6 @@ import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.screens.BoxScreen
 import com.example.packmanbarcodesgenerator.screens.PartScreen
 import com.example.packmanbarcodesgenerator.uiElements.CustomListView.CustomAlertDialog
-import com.example.packmanbarcodesgenerator.uiElements.CustomListView.RecordDataClass
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,15 +71,21 @@ fun MainScreen() {
     val HWversionPART = remember { mutableStateOf("21.1") }
     val SWversionPART = remember { mutableStateOf("8.1") }
     val serialNumberPART = remember { mutableStateOf("94288WGI00081") }
+    val isHWpresent = remember { mutableStateOf(true) }
+    val isSWpresent = remember { mutableStateOf(true) }
     //OTHER
 
-    val fieldsForPart = mapOf(
+    val fieldsForPart= mapOf(
         "article" to article,
         "index" to index,
         "customerArticle" to customerArticle,
         "HWversionPART" to HWversionPART,
         "SWversionPART" to SWversionPART,
         "serialNumberPART" to serialNumberPART
+    )
+    val fieldsForPartHWandSW= mapOf(
+        "isHWpresent" to isHWpresent,
+        "isSWpresent" to isSWpresent
     )
 
     val fieldsForBox = mapOf(
@@ -107,7 +112,8 @@ fun MainScreen() {
 
     val listOfCheckedItems = remember { mutableStateListOf<Int>() }
 
-    var listOfRecords: ArrayList<RecordDataClass> = ArrayList()
+    var listOfSavedRecordsBox: ArrayList<BoxQRcode> = ArrayList()
+    var listOfSavedRecordsPart: ArrayList<PartQRcode> = ArrayList()
 
     Box {
         Image(
@@ -150,22 +156,33 @@ fun MainScreen() {
                             val activeBottomItem: String = getActiveBottomItem(backStackEntry)
 
                             if (activeBottomItem == BottomItems.Box.name) {
-                                listOfRecords =
+                                listOfSavedRecordsBox =
                                     loadFromSharedPreferences(context, BottomItems.Box.name)
+
+                                if (listOfSavedRecordsBox.isEmpty()) {
+                                    makeToast(context, "Не має елементів для завантаження")
+                                    openDialog.value = false
+                                }
+
                             } else if (activeBottomItem == BottomItems.Part.name) {
-                                listOfRecords =
+                                listOfSavedRecordsPart =
                                     loadFromSharedPreferences(context, BottomItems.Part.name)
+
+                                if (listOfSavedRecordsPart.isEmpty()) {
+                                    makeToast(context, "Не має елементів для завантаження")
+                                    openDialog.value = false
+                                }
                             }
 
-                            //CHECK
-                            if (listOfRecords.isEmpty()) {
-                                makeToast(context, "Не має елементів для завантаження")
-                                openDialog.value = false
-                            } else {
-//                                article.value = listOfRecords[1].article
-//                                index.value = listOfRecords[1].index
-//                                customerArticle.value = listOfRecords[1].customerArticle
-                            }
+//                            //CHECK
+//                            if (listOfRecords.isEmpty()) {
+//                                makeToast(context, "Не має елементів для завантаження")
+//                                openDialog.value = false
+//                            } else {
+////                                article.value = listOfRecords[1].article
+////                                index.value = listOfRecords[1].index
+////                                customerArticle.value = listOfRecords[1].customerArticle
+//                            }
                         }
 
                         if (openDialog.value) {
@@ -175,8 +192,9 @@ fun MainScreen() {
                                 openDialog,
                                 activeBottomItem,
                                 fieldsForPart = fieldsForPart,
+                                fieldsForPartHWandSW = fieldsForPartHWandSW,
                                 fieldsForBox = fieldsForBox,
-                                listOfRecords,
+                                if (activeBottomItem == BottomItems.Box.name) listOfSavedRecordsBox else listOfSavedRecordsPart,
                                 listOfCheckedItems,
                                 context
                             )
@@ -205,7 +223,8 @@ fun MainScreen() {
                                     HWversionPART.value,
                                     SWversionPART.value,
                                     serialNumberPART.value,
-                                    isHWpresent = false, isSWpresent = false
+                                    isHWpresent.value,
+                                    isSWpresent.value
                                 )
                                 saveToSharedPreferences(context, dataPart = dataForPart)
                             }
@@ -307,7 +326,9 @@ fun MainScreen() {
                         customerArticle,
                         HWversionPART,
                         SWversionPART,
-                        serialNumberPART
+                        serialNumberPART,
+                        isHWpresent,
+                        isSWpresent
                     )
                 }
             }
@@ -322,7 +343,7 @@ fun makeToast(ctx: Context, msg: String) {
 fun saveToSharedPreferences(
     ctx: Context,
     dataBox: BoxQRcode = BoxQRcode("", "", "", "", "", ""),
-    dataPart: PartQRcode = PartQRcode("", "", "", "", "", "", false, false)
+    dataPart: PartQRcode = PartQRcode("", "", "", "", "", "", true, true)
 ) {
     val myShared = mySharedPreferences.mySharedPreferences(ctx)
     val gson = Gson()
@@ -340,9 +361,13 @@ fun saveToSharedPreferences(
     myShared.saveRecord(key, json)
 }
 
-fun loadFromSharedPreferences(ctx: Context, activeBottomItem: String): ArrayList<RecordDataClass> {
+inline fun <reified T> loadFromSharedPreferences(
+    ctx: Context,
+    activeBottomItem: String
+): ArrayList<T> {
     val myShared = mySharedPreferences.mySharedPreferences(ctx)
 
+    //Get all records fron SharedPreferences
     var allNeededRecords = mutableListOf<String>()
     if (activeBottomItem == BottomItems.Box.name) {
         allNeededRecords = myShared.getAllRecordsStartsWith(BottomItems.Box.name)
@@ -350,14 +375,28 @@ fun loadFromSharedPreferences(ctx: Context, activeBottomItem: String): ArrayList
         allNeededRecords = myShared.getAllRecordsStartsWith(BottomItems.Part.name)
     }
 
+    //Convert to needed type
     val gson = Gson()
 
-    val result: ArrayList<RecordDataClass> = ArrayList<RecordDataClass>()
+//    if (T::class.java == BoxQRcode::class.java) {
+    val result: ArrayList<T> = ArrayList<T>()
     for (record in allNeededRecords) {
-        val convertedRecord: RecordDataClass = gson.fromJson(record, RecordDataClass::class.java)
+        val convertedRecord: T = gson.fromJson(record, T::class.java)
         result.add(convertedRecord)
     }
     return result
+//    }
+//    else if (T::class.java == PartQRcode::class.java)   {
+//
+//    }
+
+
+//    val result: ArrayList<RecordDataClass> = ArrayList<RecordDataClass>()
+//    for (record in allNeededRecords) {
+//        val convertedRecord: RecordDataClass = gson.fromJson(record, RecordDataClass::class.java)
+//        result.add(convertedRecord)
+//    }
+//    return result
 }
 
 fun setValueToMutableInstance(element: MutableState<TextFieldValue>, valueToWrite: String) {

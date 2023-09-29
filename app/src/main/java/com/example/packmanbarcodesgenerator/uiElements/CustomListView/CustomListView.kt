@@ -1,7 +1,6 @@
 package com.example.packmanbarcodesgenerator.uiElements.CustomListView
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,12 +16,14 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import barcodeGenerator.BoxQRcode
+import barcodeGenerator.PartQRcode
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomListView(
     context: Context,
-    listOfRecords: List<RecordDataClass>,
+    listOfRecords: List<Any>,
     listOfCheckedItems: SnapshotStateList<Int>
 ) {
     LazyColumn(
@@ -35,11 +36,11 @@ fun CustomListView(
             Card(
                 onClick = {
                     // inside on click we are displaying the toast message.
-                    Toast.makeText(
-                        context,
-                        listOfRecords[index].article + " selected..",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        context,
+//                        listOfRecords[index].article + " selected..",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
                 },
                 modifier = Modifier.padding(8.dp),
                 border = BorderStroke(0.dp, Color.Transparent),
@@ -47,7 +48,21 @@ fun CustomListView(
                 elevation = 6.dp
             )
             {
-                BoxItemForListView(listOfRecords[index], index, listOfCheckedItems)
+
+                val currentTypeofList = listOfRecords[0]::class.simpleName
+
+                if (currentTypeofList == BoxQRcode::class.simpleName) {
+                    val neededList: List<BoxQRcode> =
+                        listOfRecords.filterIsInstance<BoxQRcode>()
+
+                    BoxItemForListView(neededList[index], index, listOfCheckedItems)
+                } else if (currentTypeofList == PartQRcode::class.simpleName) {
+                    val neededList: List<PartQRcode> =
+                        listOfRecords.filterIsInstance<PartQRcode>()
+
+                    PartItemForListView(neededList[index], index, listOfCheckedItems)
+                }
+
             }
         }
     }

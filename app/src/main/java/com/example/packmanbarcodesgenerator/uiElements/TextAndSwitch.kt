@@ -1,7 +1,6 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun TextAndSwitch(text: String, modifier: Modifier, element: MutableState<Boolean>) {
+
     Row(
         modifier = modifier
             .background(color = Color.Gray, shape = RoundedCornerShape(20.dp)),

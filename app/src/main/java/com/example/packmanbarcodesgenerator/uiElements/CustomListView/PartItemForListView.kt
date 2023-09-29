@@ -75,11 +75,11 @@ fun PartItemForListView(
             ) {
                 Text(text = partItem.customerArticle, textAlign = TextAlign.Center)
 
-                if (partItem.HWversion != null) {
+                if (partItem.HWversion.isNotEmpty()) {
                     Text(text = partItem.HWversion, textAlign = TextAlign.Center)
                 }
 
-                if (partItem.SWversion != null) {
+                if (partItem.SWversion.isNotEmpty()) {
                     Text(text = partItem.SWversion, textAlign = TextAlign.Center)
                 }
             }

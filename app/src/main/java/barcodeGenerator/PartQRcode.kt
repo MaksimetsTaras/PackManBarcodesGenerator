@@ -7,7 +7,7 @@ data class PartQRcode(
     var HWversion: String,
     var SWversion: String,
     var serialNumber: String,
-    var isHWpresent:Boolean,
-    var isSWpresent:Boolean
+    var isHWpresent: Boolean,
+    var isSWpresent: Boolean
 
 )
