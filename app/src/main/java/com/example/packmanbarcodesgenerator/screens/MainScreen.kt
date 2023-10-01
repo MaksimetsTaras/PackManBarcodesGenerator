@@ -45,7 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.R
-import com.example.packmanbarcodesgenerator.bottomNavItem
+import com.example.packmanbarcodesgenerator.BottomNavItem
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,9 +115,9 @@ fun MainScreen() {
                 )
             },
             bottomBar = {
-                val bottomNavItems = arrayListOf<bottomNavItem>()
-                bottomNavItems.add(bottomNavItem("Box", "Box", R.drawable.box))
-                bottomNavItems.add(bottomNavItem("Part", "Part", R.drawable.part))
+                val bottomNavItems = arrayListOf<BottomNavItem>()
+                bottomNavItems.add(BottomNavItem("Box", "Box", R.drawable.box))
+                bottomNavItems.add(BottomNavItem("Part", "Part", R.drawable.part))
 
                 BottomNavigation(
                     backgroundColor = colorResource(id = R.color.purple_200),
