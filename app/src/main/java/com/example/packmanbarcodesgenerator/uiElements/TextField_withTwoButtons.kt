@@ -82,12 +82,9 @@ fun TextField_withButtons(
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = true,
-                keyboardType = if (typeOfInput == TypesOfInput.integer) {
-                    KeyboardType.Number
-                } else if (typeOfInput == TypesOfInput.text) {
-                    KeyboardType.Text
-                } else {
-                    KeyboardType.Text
+                keyboardType = when (typeOfInput) {
+                    TypesOfInput.integer -> KeyboardType.Number
+                    TypesOfInput.text -> KeyboardType.Text
                 },
                 imeAction = ImeAction.Next
             ),
@@ -113,15 +110,13 @@ fun TextField_withButtons(
                     .width(80.dp)
                     .clickable {
 
-                        val decrementedValue: String
+                        val decrementedValue: String = when (typeOfInput) {
+                            TypesOfInput.integer -> decrementValue(
+                                element.value,
+                                TypesOfInput.integer
+                            )
 
-                        if (typeOfInput == TypesOfInput.integer) {
-                            decrementedValue =
-                                decrementValue(element.value, TypesOfInput.integer)
-                        } else if (typeOfInput == TypesOfInput.text) {
-                            decrementedValue = decrementValue(element.value, TypesOfInput.text)
-                        } else {
-                            decrementedValue = decrementValue(element.value, TypesOfInput.text)
+                            TypesOfInput.text -> decrementValue(element.value, TypesOfInput.text)
                         }
 
                         element.value = decrementedValue
@@ -134,15 +129,13 @@ fun TextField_withButtons(
                     .height(60.dp)
                     .width(80.dp)
                     .clickable {
-                        val incrementedValue: String
+                        val incrementedValue: String = when (typeOfInput) {
+                            TypesOfInput.integer -> incrementValue(
+                                element.value,
+                                TypesOfInput.integer
+                            )
 
-                        if (typeOfInput == TypesOfInput.integer) {
-                            incrementedValue =
-                                incrementValue(element.value, TypesOfInput.integer)
-                        } else if (typeOfInput == TypesOfInput.text) {
-                            incrementedValue = incrementValue(element.value, TypesOfInput.text)
-                        } else {
-                            incrementedValue = incrementValue(element.value, TypesOfInput.text)
+                            TypesOfInput.text -> incrementValue(element.value, TypesOfInput.text)
                         }
 
                         element.value = incrementedValue

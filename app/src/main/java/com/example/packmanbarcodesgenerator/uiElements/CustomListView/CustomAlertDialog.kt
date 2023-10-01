@@ -18,10 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
-import com.example.packmanbarcodesgenerator.BottomItems
-import com.example.packmanbarcodesgenerator.bottomNavItem
-import com.example.packmanbarcodesgenerator.makeToast
-import kotlin.reflect.cast
+import com.example.packmanbarcodesgenerator.screens.BottomItems
+import com.example.packmanbarcodesgenerator.screens.makeToast
 
 @SuppressLint("RememberReturnType")
 @Composable

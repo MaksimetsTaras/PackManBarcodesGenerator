@@ -68,7 +68,7 @@ fun BoxScreen(
 
     LaunchedEffect(Unit) {
         setFabOnClick {
-            qrCode.value = generate_BoxQRcode(
+            qrCode.value = generateBoxQRcode(
                 packaging.value,
                 article.value,
                 index.value,
@@ -161,7 +161,7 @@ fun BoxScreen(
     }
 }
 
-fun generate_BoxQRcode(
+fun generateBoxQRcode(
     packaging: String,
     article: String,
     index: String,

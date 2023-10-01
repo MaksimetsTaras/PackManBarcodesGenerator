@@ -1,4 +1,4 @@
-package com.example.packmanbarcodesgenerator
+package com.example.packmanbarcodesgenerator.screens
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -50,8 +50,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
-import com.example.packmanbarcodesgenerator.screens.BoxScreen
-import com.example.packmanbarcodesgenerator.screens.PartScreen
+import com.example.packmanbarcodesgenerator.R
+import com.example.packmanbarcodesgenerator.bottomNavItem
 import com.example.packmanbarcodesgenerator.uiElements.CustomListView.CustomAlertDialog
 import com.google.gson.Gson
 
@@ -173,16 +173,6 @@ fun MainScreen() {
                                     openDialog.value = false
                                 }
                             }
-
-//                            //CHECK
-//                            if (listOfRecords.isEmpty()) {
-//                                makeToast(context, "Не має елементів для завантаження")
-//                                openDialog.value = false
-//                            } else {
-////                                article.value = listOfRecords[1].article
-////                                index.value = listOfRecords[1].index
-////                                customerArticle.value = listOfRecords[1].customerArticle
-//                            }
                         }
 
                         if (openDialog.value) {
@@ -378,25 +368,12 @@ inline fun <reified T> loadFromSharedPreferences(
     //Convert to needed type
     val gson = Gson()
 
-//    if (T::class.java == BoxQRcode::class.java) {
     val result: ArrayList<T> = ArrayList<T>()
     for (record in allNeededRecords) {
         val convertedRecord: T = gson.fromJson(record, T::class.java)
         result.add(convertedRecord)
     }
     return result
-//    }
-//    else if (T::class.java == PartQRcode::class.java)   {
-//
-//    }
-
-
-//    val result: ArrayList<RecordDataClass> = ArrayList<RecordDataClass>()
-//    for (record in allNeededRecords) {
-//        val convertedRecord: RecordDataClass = gson.fromJson(record, RecordDataClass::class.java)
-//        result.add(convertedRecord)
-//    }
-//    return result
 }
 
 fun setValueToMutableInstance(element: MutableState<TextFieldValue>, valueToWrite: String) {
