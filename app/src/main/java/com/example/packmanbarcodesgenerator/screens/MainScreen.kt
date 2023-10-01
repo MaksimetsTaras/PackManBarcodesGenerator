@@ -16,15 +16,11 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,11 +29,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.input.TextFieldValue
@@ -52,7 +46,6 @@ import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.R
 import com.example.packmanbarcodesgenerator.bottomNavItem
-import com.example.packmanbarcodesgenerator.uiElements.CustomListView.CustomAlertDialog
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,45 +68,23 @@ fun MainScreen() {
     val isSWpresent = remember { mutableStateOf(true) }
     //OTHER
 
-    val fieldsForPart = mapOf(
-        "article" to article,
-        "index" to index,
-        "customerArticle" to customerArticle,
-        "HWversionPART" to HWversionPART,
-        "SWversionPART" to SWversionPART,
-        "serialNumberPART" to serialNumberPART
-    )
-    val fieldsForPartHWandSW = mapOf(
-        "isHWpresent" to isHWpresent,
-        "isSWpresent" to isSWpresent
-    )
-
-    val fieldsForBox = mapOf(
-        "article" to article,
-        "index" to index,
-        "customerArticle" to customerArticle,
-        "packaging" to packaging,
-        "quantityInBox" to quantityInBox,
-        "batchNumber" to batchNumber
-    )
 
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
 
     var bottomNavHeight by remember { mutableStateOf(0.dp) }
-    var topAppHeight by remember { mutableStateOf(0.dp) }
-    // get local density from composable
+//    var topAppHeight by remember { mutableStateOf(0.dp) }
+//    // get local density from composable
     val density = LocalDensity.current
-    val context = LocalContext.current
+//    val context = LocalContext.current
 
     val (fabOnClick, setFabOnClick) = remember { mutableStateOf<(() -> Unit)?>(null) }
 
-    val openDialog = remember { mutableStateOf(false) }
+    val openDialogForLoad = remember { mutableStateOf(false) }
 
-    val listOfCheckedItems = remember { mutableStateListOf<Int>() }
 
-    var listOfSavedRecordsBox: ArrayList<BoxQRcode> = ArrayList()
-    var listOfSavedRecordsPart: ArrayList<PartQRcode> = ArrayList()
+
+
 
     Box {
         Image(
@@ -127,108 +98,20 @@ fun MainScreen() {
                 .fillMaxSize(),
             backgroundColor = Color.Transparent,
             topBar = {
-                TopAppBar(
-                    modifier = Modifier
-                        .onGloballyPositioned {
-                            topAppHeight = with(density) {
-                                it.size.height.toDp()
-                            }
-                        }
-                        .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp)),
-                    colors = topAppBarColors(
-                        containerColor = colorResource(id = R.color.purple_200),
-                        titleContentColor = colorResource(id = R.color.black),
-                    ),
-                    title = {
-                        Text(stringResource(R.string.app_name))
-                    },
-                    navigationIcon = {
-                        val iconSave = painterResource(id = R.drawable.load)
-
-                        IconButton(onClick = {
-                            openDialog.value = true
-                        }) {
-                            Icon(painter = iconSave, contentDescription = null)
-                        }
-                        if (openDialog.value) {
-
-                            //Download
-                            val activeBottomItem: String = getActiveBottomItem(backStackEntry)
-
-                            if (activeBottomItem == BottomItems.Box.name) {
-                                listOfSavedRecordsBox =
-                                    loadFromSharedPreferences(context, BottomItems.Box.name)
-
-                                if (listOfSavedRecordsBox.isEmpty()) {
-                                    makeToast(context, "Не має елементів для завантаження")
-                                    openDialog.value = false
-                                }
-
-                            } else if (activeBottomItem == BottomItems.Part.name) {
-                                listOfSavedRecordsPart =
-                                    loadFromSharedPreferences(context, BottomItems.Part.name)
-
-                                if (listOfSavedRecordsPart.isEmpty()) {
-                                    makeToast(context, "Не має елементів для завантаження")
-                                    openDialog.value = false
-                                }
-                            }
-                        }
-
-                        if (openDialog.value) {
-                            listOfCheckedItems.clear()
-                            val activeBottomItem: String = getActiveBottomItem(backStackEntry)
-                            CustomAlertDialog(
-                                openDialog,
-                                activeBottomItem,
-                                fieldsForPart = fieldsForPart,
-                                fieldsForPartHWandSW = fieldsForPartHWandSW,
-                                fieldsForBox = fieldsForBox,
-                                if (activeBottomItem == BottomItems.Box.name) listOfSavedRecordsBox else listOfSavedRecordsPart,
-                                listOfCheckedItems,
-                                context
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = {
-                            val activeBottomItem: String = getActiveBottomItem(backStackEntry)
-
-                            if (activeBottomItem == BottomItems.Box.name) {
-                                val dataForBox = BoxQRcode(
-                                    packaging.value,
-                                    article.value,
-                                    index.value,
-                                    quantityInBox.value,
-                                    batchNumber.value,
-                                    customerArticle.value
-                                )
-                                saveToSharedPreferences(context, dataBox = dataForBox)
-
-                            } else if (activeBottomItem == BottomItems.Part.name) {
-                                val dataForPart = PartQRcode(
-                                    article.value,
-                                    index.value,
-                                    customerArticle.value,
-                                    if (isHWpresent.value) HWversionPART.value else "no",
-                                    if (isSWpresent.value) SWversionPART.value else "no",
-                                    serialNumberPART.value,
-                                    isHWpresent.value,
-                                    isSWpresent.value
-                                )
-                                saveToSharedPreferences(context, dataPart = dataForPart)
-                            }
-                            makeToast(context, "Save")
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.save),
-                                contentDescription = null
-                            )
-                        }
-//                    IconButton(onClick = { makeToast(context, "Save") }) {
-//                        Icon(painter = icon2, contentDescription = null)
-//                    }
-                    },
+                MainScreenTopBar(
+                    openDialogForLoad,
+                    backStackEntry,
+                    article,
+                    index,
+                    customerArticle,
+                    HWversionPART,
+                    SWversionPART,
+                    serialNumberPART,
+                    isHWpresent,
+                    isSWpresent,
+                    packaging,
+                    quantityInBox,
+                    batchNumber
                 )
             },
             bottomBar = {
