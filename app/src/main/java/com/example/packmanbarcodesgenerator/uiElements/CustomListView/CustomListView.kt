@@ -62,7 +62,6 @@ fun CustomListView(
 
                     PartItemForListView(neededList[index], index, listOfCheckedItems)
                 }
-
             }
         }
     }

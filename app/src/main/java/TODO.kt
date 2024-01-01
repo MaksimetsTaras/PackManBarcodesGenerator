@@ -8,3 +8,4 @@
 // Done - TODO Not always SW and HW present. Need checkbox. If check box enabled, use this check box
 // Передавати в compose об'єкт, а не змінні
 // Зберігати останній обраний артикль, і все інше, для наступного входу
+// У AlertDialog scroll погано працює = перенести все у секцію buttons
