@@ -28,6 +28,8 @@ import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.screens.BottomItems
 import com.example.packmanbarcodesgenerator.screens.makeToast
+import com.google.gson.Gson
+import mySharedPreferences.mySharedPreferences
 
 @SuppressLint("RememberReturnType")
 @Composable
@@ -41,6 +43,8 @@ fun CustomAlertDialog(
     listOfCheckedItems: SnapshotStateList<Int>,
     context: Context
 ) {
+
+    val mySharedPreferences = mySharedPreferences(context)
 
     if (state.value) {
         AlertDialog(
@@ -64,8 +68,7 @@ fun CustomAlertDialog(
                     }
 
                     Row(modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Column(modifier = Modifier.background(Color.Green)) {
-
+                        Column {
                             var neededList: List<Any> = listOfRecords.filterIsInstance<BoxQRcode>()
                             if (activeBottomItem == BottomItems.Box.name) {
                                 neededList = listOfRecords.filterIsInstance<BoxQRcode>()
@@ -135,7 +138,40 @@ fun CustomAlertDialog(
                         }
 
                         Button(
-                            onClick = { state.value = false }
+                            onClick = {
+//                                state.value = false
+                                if (listOfCheckedItems.isEmpty()) {
+                                    listOfCheckedItems.clear()
+                                    makeToast(context, "Оберіть хоча б ОДИН елемент")
+                                } else {
+
+                                    val gson = Gson()
+
+                                    for (element in listOfCheckedItems) {
+                                        val currentRecordToDelete = listOfRecords[element]
+                                        val recordInJson = gson.toJson(currentRecordToDelete)
+
+                                        //видалити з sharedPreferences
+                                        mySharedPreferences.deleteRecordByValue(
+                                            recordInJson
+                                        )
+                                        //оновити список
+                                        state.value = false
+                                        state.value = true
+
+//                                        if (activeBottomItem == BottomItems.Box.name) {
+//
+//
+//
+////                                            fieldsForBox = mySharedPreferences.getAllRecords_WhereKeyStartsWith(BottomItems.Box.name)
+//                                        } else if (activeBottomItem == BottomItems.Part.name) {
+//
+//                                        }
+
+
+                                    }
+                                }
+                            }
                         ) {
                             Text("Видалити")
                         }
@@ -146,60 +182,60 @@ fun CustomAlertDialog(
     }
 }
 
-//@SuppressLint("UnrememberedMutableState")
-//@Preview(showBackground = false)
-//@Composable
-//fun CustomAlertDialogPreview() {
-//
-//    val partItem = PartQRcode(
-//        "12181454", "03", "254789361R", "23.1", "6.2", "9428812345678",
-//        isHWpresent = true,
-//        isSWpresent = true
-//    )
-//
-//    val state: MutableState<Boolean> = mutableStateOf(false)
-//    val activeBottomItem: String = "Box"
-//    val fieldsForPart: Map<String, MutableState<String>> = mapOf(
-//        "article" to mutableStateOf(""),
-//        "index" to mutableStateOf(""),
-//        "customerArticle" to mutableStateOf(""),
-//        "HWversionPART" to mutableStateOf(""),
-//        "SWversionPART" to mutableStateOf(""),
-//        "serialNumberPART" to mutableStateOf("")
-//    )
-//    val fieldsForPartHWandSW: Map<String, MutableState<Boolean>> = mapOf(
-//        "isHWpresent" to mutableStateOf(false),
-//        "isSWpresent" to mutableStateOf(false)
-//    )
-//
-//    val fieldsForBox: Map<String, MutableState<String>> = mapOf(
-//        "article" to mutableStateOf(""),
-//        "index" to mutableStateOf(""),
-//        "customerArticle" to mutableStateOf(""),
-//        "packaging" to mutableStateOf(""),
-//        "quantityInBox" to mutableStateOf(""),
-//        "batchNumber" to mutableStateOf("")
-//    )
-//    val listOfRecords: List<Any> = listOf {partItem}
-//
-//
-//    val listOfCheckedItems: SnapshotStateList<Int> = SnapshotStateList()
-//    val context: Context = LocalContext.current
-//
-//    CustomAlertDialog(
-//        state,
-//        activeBottomItem,
-//        fieldsForPart,
-//        fieldsForPartHWandSW,
-//        fieldsForBox,
-//        listOfRecords,
-//        listOfCheckedItems,
-//        context
-//    )
-//}
-
-@Preview
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = false)
 @Composable
-fun DefaultPreview() {
-    Text(text = "Hello Compose!")
+fun CustomAlertDialogPreview() {
+
+    val partItem = PartQRcode(
+        "12181454", "03", "254789361R", "23.1", "6.2", "9428812345678",
+        isHWpresent = true,
+        isSWpresent = true
+    )
+
+    val state: MutableState<Boolean> = mutableStateOf(true)
+    val activeBottomItem: String = "Box"
+    val fieldsForPart: Map<String, MutableState<String>> = mapOf(
+        "article" to mutableStateOf(""),
+        "index" to mutableStateOf(""),
+        "customerArticle" to mutableStateOf(""),
+        "HWversionPART" to mutableStateOf(""),
+        "SWversionPART" to mutableStateOf(""),
+        "serialNumberPART" to mutableStateOf("")
+    )
+    val fieldsForPartHWandSW: Map<String, MutableState<Boolean>> = mapOf(
+        "isHWpresent" to mutableStateOf(false),
+        "isSWpresent" to mutableStateOf(false)
+    )
+
+    val fieldsForBox: Map<String, MutableState<String>> = mapOf(
+        "article" to mutableStateOf(""),
+        "index" to mutableStateOf(""),
+        "customerArticle" to mutableStateOf(""),
+        "packaging" to mutableStateOf(""),
+        "quantityInBox" to mutableStateOf(""),
+        "batchNumber" to mutableStateOf("")
+    )
+    val listOfRecords: List<Any> = listOf { partItem }
+
+
+    val listOfCheckedItems: SnapshotStateList<Int> = SnapshotStateList()
+    val context: Context = LocalContext.current
+
+    CustomAlertDialog(
+        state,
+        activeBottomItem,
+        fieldsForPart,
+        fieldsForPartHWandSW,
+        fieldsForBox,
+        listOfRecords,
+        listOfCheckedItems,
+        context
+    )
 }
+
+//@Preview
+//@Composable
+//fun DefaultPreview() {
+//    Text(text = "Hello Compose!")
+//}

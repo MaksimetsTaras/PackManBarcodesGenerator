@@ -48,7 +48,6 @@ fun CustomListView(
                 elevation = 6.dp
             )
             {
-
                 val currentTypeofList = listOfRecords[0]::class.simpleName
 
                 if (currentTypeofList == BoxQRcode::class.simpleName) {

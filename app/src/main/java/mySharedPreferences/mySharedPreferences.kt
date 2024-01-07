@@ -2,6 +2,11 @@ package mySharedPreferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.ui.input.key.Key
+import kotlin.io.path.fileVisitor
+import kotlin.math.absoluteValue
 
 class mySharedPreferences(context: Context) {
 
@@ -19,18 +24,30 @@ class mySharedPreferences(context: Context) {
     }
 
 
-//
-//    private fun removeRecord(key: String) {
-//        _spEditor.remove(key).commit()
-//    }
+    private fun removeRecord(key: String) {
+        _spEditor.remove(key).commit()
+    }
+
+    fun deleteRecordByValue(valueToDelete: String) {
+        //get KEY by VALUE
+        //remove found Key
+        val allRerords = getAllRecords()
+        if (allRerords != null) {
+            for (record in allRerords) {
+                if (record.value == valueToDelete) {
+                    removeRecord(record.key)
+                }
+            }
+        }
+    }
 
     fun saveRecord(key: String, value: String) {
-        val nextValue = getQtyOfKeysStartsWith(key) + 1
+        val nextValue = getNextValue(key)
         val newKey = key + "_" + nextValue.toString()
         putString(newKey, value)
     }
 
-    fun getAllRecordsStartsWith(startOfKey: String): MutableList<String> {
+    fun getAllValues_WhereKeyStartsWith(startOfKey: String): MutableList<String> {
         val allKeys = getAllRecords()
 
         val results: MutableList<String> = mutableListOf()
@@ -44,19 +61,47 @@ class mySharedPreferences(context: Context) {
         }
         return results
     }
-//    fun getPersNumber(): String {
-//        return getString(_box_KeyName)
-//    }
-    private fun getQtyOfKeysStartsWith(startOfKey: String): Int {
-        val allKeys = getAllKeys()
-        var qtyOfRecords = 0
 
-        for (item in allKeys) {
-            if (item.startsWith(startOfKey)) {
-                qtyOfRecords = qtyOfRecords + 1
+    fun getAllRecords_WhereKeyStartsWith(startOfKey: String): Map<String, MutableState<String>> {
+        val allKeys = getAllRecords()
+
+        val results: Map<String, MutableState<String>> = mutableStateMapOf()
+
+        if (allKeys != null) {
+            for (item in allKeys) {
+                if (item.key.startsWith(startOfKey)) {
+                    results.plus(Pair(item.key, item.value))
+                }
             }
         }
-        return qtyOfRecords
+        return results
+    }
+
+    //    fun getPersNumber(): String {
+//        return getString(_box_KeyName)
+//    }
+    private fun getNextValue(startOfKey: String): Int {
+        val allKeys = getAllKeys()
+
+        //get all needed keys
+        val neededKeys = arrayListOf<String>()
+        for (item in allKeys) {
+            if (item.startsWith(startOfKey)) {
+                neededKeys.add(item)
+            }
+        }
+
+        //get only digits from name of KEYs
+        val digits = arrayListOf<Int>()
+        val prefixToRemove = startOfKey + "_"
+        var currentKeyNumber = ""
+        for (key in neededKeys) {
+            currentKeyNumber = key.removePrefix(prefixToRemove)
+            digits.add(currentKeyNumber.toInt())
+        }
+
+        digits.sortDescending()
+        return digits[0] + 1
     }
 
 //    fun saveSurname(value: String) {
@@ -70,9 +115,11 @@ class mySharedPreferences(context: Context) {
     private fun getString(key: String): String {
         return _spSettings.getString(key, "no values found").toString()
     }
+
     private fun putString(key: String, value: String) {
         _spEditor.putString(key, value).commit()
     }
+
     private fun getAllKeys(): MutableSet<String> {
         val keys: MutableSet<String> = _spSettings.all.keys
         return keys

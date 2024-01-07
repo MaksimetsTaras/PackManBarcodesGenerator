@@ -182,3 +182,29 @@ fun generateBoxQRcode(
 
     return barcodeGenerator.createBoxQRcode(boxInfoForQRcode)
 }
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = false)
+@Composable
+fun BoxScreenPreview(){
+//    Text(text = "Hello Compose!")
+
+    val (fabOnClick, setFabOnClick) = remember { mutableStateOf<(() -> Unit)?>(null) }
+    val article: MutableState<String> = mutableStateOf("10544017")
+    val  index: MutableState<String> = mutableStateOf("03")
+    val  packaging: MutableState<String> = mutableStateOf("453940087")
+    val  quantityInBox: MutableState<String> = mutableStateOf("50")
+    val  batchNumber: MutableState<String> = mutableStateOf("720716")
+    val  customerArticle: MutableState<String> = mutableStateOf("A1749055601")
+
+    BoxScreen(
+        setFabOnClick = setFabOnClick,
+        article = article,
+        index = index,
+        packaging = packaging,
+        quantityInBox = quantityInBox,
+        batchNumber = batchNumber,
+        customerArticle = customerArticle
+    )
+
+}

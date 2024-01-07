@@ -1,6 +1,8 @@
 package com.example.packmanbarcodesgenerator.uiElements
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -17,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -49,7 +53,10 @@ fun TextField_withButtons(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 5.dp),
+            .padding(horizontal = 10.dp, vertical = 5.dp)
+//            .border(border = ButtonDefaults.outlinedBorder)
+            .clip(shape = RoundedCornerShape(15.dp))
+            .background(Color.White),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         TextField(
@@ -88,7 +95,7 @@ fun TextField_withButtons(
                 },
                 imeAction = ImeAction.Next
             ),
-            shape = RoundedCornerShape(15.dp),
+//            shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
                 focusedTextColor = Color.Green,
                 disabledTextColor = Color.Transparent,

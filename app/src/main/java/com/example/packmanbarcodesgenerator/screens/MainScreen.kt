@@ -243,9 +243,9 @@ inline fun <reified T> loadFromSharedPreferences(
     //Get all records fron SharedPreferences
     var allNeededRecords = mutableListOf<String>()
     if (activeBottomItem == BottomItems.Box.name) {
-        allNeededRecords = myShared.getAllRecordsStartsWith(BottomItems.Box.name)
+        allNeededRecords = myShared.getAllValues_WhereKeyStartsWith(BottomItems.Box.name)
     } else if (activeBottomItem == BottomItems.Part.name) {
-        allNeededRecords = myShared.getAllRecordsStartsWith(BottomItems.Part.name)
+        allNeededRecords = myShared.getAllValues_WhereKeyStartsWith(BottomItems.Part.name)
     }
 
     //Convert to needed type

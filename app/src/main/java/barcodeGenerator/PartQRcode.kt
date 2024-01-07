@@ -9,5 +9,4 @@ data class PartQRcode(
     var serialNumber: String,
     var isHWpresent: Boolean,
     var isSWpresent: Boolean
-
 )
