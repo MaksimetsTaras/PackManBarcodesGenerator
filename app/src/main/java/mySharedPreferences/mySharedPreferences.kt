@@ -101,7 +101,12 @@ class mySharedPreferences(context: Context) {
         }
 
         digits.sortDescending()
-        return digits[0] + 1
+
+        if (digits.isEmpty()) {
+            return 0
+        } else {
+            return digits[0] + 1
+        }
     }
 
 //    fun saveSurname(value: String) {

@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -18,14 +21,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
+import com.example.packmanbarcodesgenerator.R
 import com.example.packmanbarcodesgenerator.screens.BottomItems
 import com.example.packmanbarcodesgenerator.screens.makeToast
 import com.google.gson.Gson
@@ -57,17 +63,23 @@ fun CustomAlertDialog(
 
                     Row(
                         horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .padding(vertical = 10.dp)
+                            .background(
+                                colorResource(id = R.color.purple_200),
+                                shape = RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp)
+                            )
+                            .height(50.dp)
                             .fillMaxWidth()
                     ) {
                         Text(
                             text = "Попередньо збережені: " + listOfRecords.count() + "шт.",
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
+                            color = Color.White
                         )
                     }
 
-                    Row(modifier = Modifier.padding(horizontal = 10.dp)) {
+                    Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)) {
                         Column {
                             var neededList: List<Any> = listOfRecords.filterIsInstance<BoxQRcode>()
                             if (activeBottomItem == BottomItems.Box.name) {
@@ -85,10 +97,17 @@ fun CustomAlertDialog(
                     }
 
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .background(
+                                colorResource(id = R.color.purple_200),
+                                shape = RoundedCornerShape(30.dp, 30.dp, 0.dp, 0.dp)
+                            ),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
                         Button(
+                            modifier = Modifier.width(120.dp),
                             onClick = {
                                 if (listOfCheckedItems.count() != 1) {
                                     listOfCheckedItems.clear()
@@ -138,6 +157,7 @@ fun CustomAlertDialog(
                         }
 
                         Button(
+                            modifier = Modifier.width(120.dp),
                             onClick = {
 //                                state.value = false
                                 if (listOfCheckedItems.isEmpty()) {
@@ -159,15 +179,6 @@ fun CustomAlertDialog(
                                         state.value = false
                                         state.value = true
 
-//                                        if (activeBottomItem == BottomItems.Box.name) {
-//
-//
-//
-////                                            fieldsForBox = mySharedPreferences.getAllRecords_WhereKeyStartsWith(BottomItems.Box.name)
-//                                        } else if (activeBottomItem == BottomItems.Part.name) {
-//
-//                                        }
-
 
                                     }
                                 }
@@ -183,7 +194,7 @@ fun CustomAlertDialog(
 }
 
 @SuppressLint("UnrememberedMutableState")
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @Composable
 fun CustomAlertDialogPreview() {
 
