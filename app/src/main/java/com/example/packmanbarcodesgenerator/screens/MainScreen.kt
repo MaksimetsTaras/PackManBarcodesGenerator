@@ -14,7 +14,6 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +22,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,28 +44,27 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
-import com.example.packmanbarcodesgenerator.R
 import com.example.packmanbarcodesgenerator.BottomNavItem
+import com.example.packmanbarcodesgenerator.R
 import com.google.gson.Gson
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
     //JOINT
-    val article = remember { mutableStateOf("10544017") }
-    val index = remember { mutableStateOf("00") }
-    val customerArticle = remember { mutableStateOf("A1749055601") }
+    val article = rememberSaveable{ mutableStateOf("10544017") }
+    val index = rememberSaveable { mutableStateOf("00") }
+    val customerArticle = rememberSaveable { mutableStateOf("A1749055601") }
     //BOX
-    val packaging = remember { mutableStateOf("453940087") }
-    val quantityInBox = remember { mutableStateOf("10") }
-    val batchNumber = remember { mutableStateOf("720716") }
+    val packaging = rememberSaveable { mutableStateOf("453940087") }
+    val quantityInBox = rememberSaveable { mutableStateOf("10") }
+    val batchNumber = rememberSaveable { mutableStateOf("720716") }
     //PART
-    val HWversionPART = remember { mutableStateOf("21.1") }
-    val SWversionPART = remember { mutableStateOf("8.1") }
-    val serialNumberPART = remember { mutableStateOf("94288WGI00081") }
-    val isHWpresent = remember { mutableStateOf(true) }
-    val isSWpresent = remember { mutableStateOf(true) }
+    val HWversionPART = rememberSaveable { mutableStateOf("21.1") }
+    val SWversionPART = rememberSaveable { mutableStateOf("8.1") }
+    val serialNumberPART = rememberSaveable { mutableStateOf("94288WGI00081") }
+    val isHWpresent = rememberSaveable { mutableStateOf(true) }
+    val isSWpresent = rememberSaveable { mutableStateOf(true) }
     //OTHER
 
 

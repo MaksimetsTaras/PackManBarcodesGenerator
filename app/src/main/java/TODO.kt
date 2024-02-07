@@ -9,4 +9,7 @@
 // Передавати в compose об'єкт, а не змінні
 // Зберігати останній обраний артикль, і все інше, для наступного входу
 // У AlertDialog scroll погано працює = перенести все у секцію buttons
-//Check for duplication
+// Check for duplication
+// Create another layout for landscape
+//в PartScreen передавати об'єкт, а не великий набір аргументів
+// Після запуску завантажувати останній запис
