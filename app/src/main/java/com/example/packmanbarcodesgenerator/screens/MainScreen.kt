@@ -177,7 +177,8 @@ fun MainScreen() {
                 startDestination = "Box",
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = bottomNavHeight + (bottomNavHeight / 2))
+                    .padding(bottom = bottomNavHeight)
+//                    .padding(bottom = bottomNavHeight + (bottomNavHeight / 2))
             ) {
                 composable("Box") {
                     BoxScreen(
