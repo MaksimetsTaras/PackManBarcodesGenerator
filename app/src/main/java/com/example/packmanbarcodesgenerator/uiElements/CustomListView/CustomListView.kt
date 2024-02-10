@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import barcodeGenerator.BoxQRcode
 import barcodeGenerator.PartQRcode
@@ -26,9 +27,19 @@ fun CustomListView(
     listOfRecords: List<Any>,
     listOfCheckedItems: SnapshotStateList<Int>
 ) {
+
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
     LazyColumn(
         modifier = Modifier
-            .height(300.dp)
+            .height(
+                if (screenHeight > 400.dp) {
+                    300.dp
+                } else {
+                    screenHeight - 200.dp
+                }
+            )
             .background(Color.Transparent)
             .border(width = 1.dp, color = Color.Blue, shape = RoundedCornerShape(0.dp)),
     ) {

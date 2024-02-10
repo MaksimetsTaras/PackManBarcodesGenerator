@@ -152,7 +152,7 @@ fun PartScreenLandscape(
             Column(modifier = Modifier.weight(1f)) {
                 Row {
                     TextAndSwitch(
-                        "HW_Land", modifier = Modifier.weight(1f), element = isHWpresent
+                        "HW", modifier = Modifier.weight(1f), element = isHWpresent
                     )
                     Spacer(modifier = Modifier.width(20.dp))
 
@@ -174,7 +174,6 @@ fun PartScreenLandscape(
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier
                             .size(150.dp)
-                            .background(color = Color.White)
                     )
                 }
             }
