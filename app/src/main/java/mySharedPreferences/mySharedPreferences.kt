@@ -4,18 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.ui.input.key.Key
-import kotlin.io.path.fileVisitor
-import kotlin.math.absoluteValue
+import barcodeGenerator.LastUsedData
 
 class mySharedPreferences(context: Context) {
 
     var _spSettings: SharedPreferences
     var _spEditor: SharedPreferences.Editor
 
-//    val _box_KeyName = "BoxValues"
-
-    lateinit var _context: Context
+    var _context: Context
 
     init {
         _context = context
@@ -29,8 +25,6 @@ class mySharedPreferences(context: Context) {
     }
 
     fun deleteRecordByValue(valueToDelete: String) {
-        //get KEY by VALUE
-        //remove found Key
         val allRerords = getAllRecords()
         if (allRerords != null) {
             for (record in allRerords) {
@@ -77,9 +71,7 @@ class mySharedPreferences(context: Context) {
         return results
     }
 
-    //    fun getPersNumber(): String {
-//        return getString(_box_KeyName)
-//    }
+
     private fun getNextValue(startOfKey: String): Int {
         val allKeys = getAllKeys()
 
@@ -94,7 +86,7 @@ class mySharedPreferences(context: Context) {
         //get only digits from name of KEYs
         val digits = arrayListOf<Int>()
         val prefixToRemove = startOfKey + "_"
-        var currentKeyNumber = ""
+        var currentKeyNumber: String
         for (key in neededKeys) {
             currentKeyNumber = key.removePrefix(prefixToRemove)
             digits.add(currentKeyNumber.toInt())
@@ -102,10 +94,10 @@ class mySharedPreferences(context: Context) {
 
         digits.sortDescending()
 
-        if (digits.isEmpty()) {
-            return 0
+        return if (digits.isEmpty()) {
+            0
         } else {
-            return digits[0] + 1
+            digits[0] + 1
         }
     }
 
@@ -134,4 +126,15 @@ class mySharedPreferences(context: Context) {
         val keys: MutableMap<String, *>? = _spSettings.all
         return keys
     }
+
+    //Last Used Data functions
+
+    fun readLastUsedData(): String {
+        return getString("LastUsedData")
+    }
+
+    fun writeLastUsedData(valuetoSave: String) {
+        putString("LastUsedData", valuetoSave)
+    }
+
 }

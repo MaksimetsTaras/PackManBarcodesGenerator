@@ -1,5 +1,6 @@
 package com.example.packmanbarcodesgenerator.screens
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -31,9 +32,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import barcodeGenerator.BoxQRcode
+import barcodeGenerator.LastUsedData
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.R
 import com.example.packmanbarcodesgenerator.uiElements.CustomListView.CustomAlertDialog
+import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -179,6 +182,7 @@ fun MainScreenTopBar(
                     saveToSharedPreferences(context, dataPart = dataForPart)
                 }
                 makeToast(context, "Save")
+                writeLastUsedRecordToSharedPref(context, LastUsedData(article.value, index.value))
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.save),
@@ -190,4 +194,15 @@ fun MainScreenTopBar(
 //                    }
         },
     )
+}
+
+fun writeLastUsedRecordToSharedPref(ctx: Context, usedData: LastUsedData) {
+    val myShared = mySharedPreferences.mySharedPreferences(ctx)
+
+    val gson = Gson()
+
+    var valueToWrite = gson.toJson(usedData)
+
+    myShared.writeLastUsedData(valueToWrite)
+
 }

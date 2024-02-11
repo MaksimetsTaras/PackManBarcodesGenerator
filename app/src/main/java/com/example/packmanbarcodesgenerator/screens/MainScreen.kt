@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -43,6 +44,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import barcodeGenerator.BoxQRcode
+import barcodeGenerator.LastUsedData
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.BottomNavItem
 import com.example.packmanbarcodesgenerator.R
@@ -51,14 +53,22 @@ import com.google.gson.Gson
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
+    var context = LocalContext.current
+    //TODO get last record
+    var lastUsedData = getLastUsedRecordFromSharedPref(context)
+    //TODO Update fields by values from last record
+
+
     //JOINT
-    val article = rememberSaveable{ mutableStateOf("10544017") }
-    val index = rememberSaveable { mutableStateOf("00") }
+    val article = rememberSaveable { mutableStateOf(lastUsedData.article) }
+    val index = rememberSaveable { mutableStateOf(lastUsedData.index) }
     val customerArticle = rememberSaveable { mutableStateOf("A1749055601") }
+
     //BOX
     val packaging = rememberSaveable { mutableStateOf("453940087") }
     val quantityInBox = rememberSaveable { mutableStateOf("10") }
     val batchNumber = rememberSaveable { mutableStateOf("720716") }
+
     //PART
     val HWversionPART = rememberSaveable { mutableStateOf("21.1") }
     val SWversionPART = rememberSaveable { mutableStateOf("8.1") }
@@ -67,23 +77,15 @@ fun MainScreen() {
     val isSWpresent = rememberSaveable { mutableStateOf(true) }
     //OTHER
 
-
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
 
     var bottomNavHeight by remember { mutableStateOf(0.dp) }
-//    var topAppHeight by remember { mutableStateOf(0.dp) }
-//    // get local density from composable
     val density = LocalDensity.current
-//    val context = LocalContext.current
 
     val (fabOnClick, setFabOnClick) = remember { mutableStateOf<(() -> Unit)?>(null) }
 
     val openDialogForLoad = remember { mutableStateOf(false) }
-
-
-
-
 
     Box {
         Image(
@@ -256,6 +258,22 @@ inline fun <reified T> loadFromSharedPreferences(
         val convertedRecord: T = gson.fromJson(record, T::class.java)
         result.add(convertedRecord)
     }
+    return result
+}
+
+fun getLastUsedRecordFromSharedPref(ctx: Context): LastUsedData {
+    val myShared = mySharedPreferences.mySharedPreferences(ctx)
+
+    //Get lastUsedData
+    var lastUsedData = myShared.readLastUsedData()
+    var result = LastUsedData()
+    //Convert to needed type
+    val gson = Gson()
+
+    if (lastUsedData != "no values found") {
+        result = gson.fromJson(lastUsedData, LastUsedData::class.java)
+    }
+
     return result
 }
 
