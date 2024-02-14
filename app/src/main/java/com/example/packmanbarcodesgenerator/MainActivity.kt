@@ -38,33 +38,33 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onPause() {
-        Toast.makeText(baseContext, "onPause", Toast.LENGTH_SHORT).show()
-        super.onPause()
-    }
-
-    override fun onStart() {
-        Toast.makeText(baseContext, "onStart", Toast.LENGTH_SHORT).show()
-        super.onStart()
-    }
-
-    override fun onRestart() {
-        Toast.makeText(baseContext, "onRestart", Toast.LENGTH_SHORT).show()
-        super.onRestart()
-    }
-
-    override fun onResume() {
-        Toast.makeText(baseContext, "onResume", Toast.LENGTH_SHORT).show()
-        super.onResume()
-    }
-
-    override fun onDestroy() {
-        Toast.makeText(baseContext, "onDestroy", Toast.LENGTH_SHORT).show()
-        super.onDestroy()
-    }
-
-    override fun onStop() {
-        Toast.makeText(baseContext, "onStop", Toast.LENGTH_SHORT).show()
-        super.onStop()
-    }
+//    override fun onPause() {
+//        Toast.makeText(baseContext, "onPause", Toast.LENGTH_SHORT).show()
+//        super.onPause()
+//    }
+//
+//    override fun onStart() {
+//        Toast.makeText(baseContext, "onStart", Toast.LENGTH_SHORT).show()
+//        super.onStart()
+//    }
+//
+//    override fun onRestart() {
+//        Toast.makeText(baseContext, "onRestart", Toast.LENGTH_SHORT).show()
+//        super.onRestart()
+//    }
+//
+//    override fun onResume() {
+//        Toast.makeText(baseContext, "onResume", Toast.LENGTH_SHORT).show()
+//        super.onResume()
+//    }
+//
+//    override fun onDestroy() {
+//        Toast.makeText(baseContext, "onDestroy", Toast.LENGTH_SHORT).show()
+//        super.onDestroy()
+//    }
+//
+//    override fun onStop() {
+//        Toast.makeText(baseContext, "onStop", Toast.LENGTH_SHORT).show()
+//        super.onStop()
+//    }
 }

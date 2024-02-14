@@ -62,19 +62,19 @@ fun MainScreen() {
     //JOINT
     val article = rememberSaveable { mutableStateOf(lastUsedData.article) }
     val index = rememberSaveable { mutableStateOf(lastUsedData.index) }
-    val customerArticle = rememberSaveable { mutableStateOf("A1749055601") }
+    val customerArticle = rememberSaveable { mutableStateOf(lastUsedData.customerArticle) }
 
     //BOX
-    val packaging = rememberSaveable { mutableStateOf("453940087") }
-    val quantityInBox = rememberSaveable { mutableStateOf("10") }
-    val batchNumber = rememberSaveable { mutableStateOf("720716") }
+    val packaging = rememberSaveable { mutableStateOf(lastUsedData.packaging) }
+    val quantityInBox = rememberSaveable { mutableStateOf(lastUsedData.quantityInBox) }
+    val batchNumber = rememberSaveable { mutableStateOf(lastUsedData.batchNumber) }
 
     //PART
-    val HWversionPART = rememberSaveable { mutableStateOf("21.1") }
-    val SWversionPART = rememberSaveable { mutableStateOf("8.1") }
-    val serialNumberPART = rememberSaveable { mutableStateOf("94288WGI00081") }
-    val isHWpresent = rememberSaveable { mutableStateOf(true) }
-    val isSWpresent = rememberSaveable { mutableStateOf(true) }
+    val HWversionPART = rememberSaveable { mutableStateOf(lastUsedData.HWversionPART) }
+    val SWversionPART = rememberSaveable { mutableStateOf(lastUsedData.SWversionPART) }
+    val serialNumberPART = rememberSaveable { mutableStateOf(lastUsedData.serialNumberPART) }
+    val isHWpresent = rememberSaveable { mutableStateOf(lastUsedData.isHWpresent) }
+    val isSWpresent = rememberSaveable { mutableStateOf(lastUsedData.isSWpresent) }
     //OTHER
 
     val navController = rememberNavController()

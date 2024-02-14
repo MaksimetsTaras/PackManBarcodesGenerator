@@ -1,7 +1,6 @@
 package com.example.packmanbarcodesgenerator.screens
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -155,6 +153,21 @@ fun MainScreenTopBar(
         },
         actions = {
             IconButton(onClick = {
+
+                val currentUsedData = LastUsedData(
+                    article.value,
+                    index.value,
+                    customerArticle.value,
+                    packaging.value,
+                    quantityInBox.value,
+                    batchNumber.value,
+                    HWversionPART.value,
+                    SWversionPART.value,
+                    isHWpresent.value,
+                    isSWpresent.value,
+                    serialNumberPART.value
+                )
+
                 val activeBottomItem: String = getActiveBottomItem(backStackEntry)
 
                 if (activeBottomItem == BottomItems.Box.name) {
@@ -182,7 +195,7 @@ fun MainScreenTopBar(
                     saveToSharedPreferences(context, dataPart = dataForPart)
                 }
                 makeToast(context, "Save")
-                writeLastUsedRecordToSharedPref(context, LastUsedData(article.value, index.value))
+                writeLastUsedRecordToSharedPref(context, currentUsedData)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.save),
@@ -201,7 +214,7 @@ fun writeLastUsedRecordToSharedPref(ctx: Context, usedData: LastUsedData) {
 
     val gson = Gson()
 
-    var valueToWrite = gson.toJson(usedData)
+    val valueToWrite = gson.toJson(usedData)
 
     myShared.writeLastUsedData(valueToWrite)
 
