@@ -26,6 +26,7 @@ import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +37,7 @@ import com.example.packmanbarcodesgenerator.screens.BottomItems
 import com.example.packmanbarcodesgenerator.screens.makeToast
 import com.google.gson.Gson
 import mySharedPreferences.mySharedPreferences
+import java.io.StringReader
 
 @SuppressLint("RememberReturnType")
 @Composable
@@ -73,7 +75,9 @@ fun CustomAlertDialog(
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text = "Попередньо збережені: " + listOfRecords.count() + "шт.",
+                            text = stringResource(id = R.string.previously_saved) + listOfRecords.count() + stringResource(
+                                R.string.pcs
+                            ),
                             fontSize = 20.sp,
                             color = Color.White
                         )
@@ -111,7 +115,7 @@ fun CustomAlertDialog(
                             onClick = {
                                 if (listOfCheckedItems.count() != 1) {
                                     listOfCheckedItems.clear()
-                                    makeToast(context, "Оберіть ОДИН елемент")
+                                    makeToast(context, context.resources.getString(R.string.choose_one_element))
                                 } else {
 
                                     val neededList: Any
@@ -153,7 +157,7 @@ fun CustomAlertDialog(
                                 }
                             }
                         ) {
-                            Text("Обрати")
+                            Text(stringResource(id = R.string.btn_name_choose))
                         }
 
                         Button(
@@ -162,7 +166,8 @@ fun CustomAlertDialog(
 //                                state.value = false
                                 if (listOfCheckedItems.isEmpty()) {
                                     listOfCheckedItems.clear()
-                                    makeToast(context, "Оберіть хоча б ОДИН елемент")
+//                                    makeToast(context, "Оберіть хоча б ОДИН елемент")
+                                    makeToast(context, context.resources.getString(R.string.choose_one_element))
                                 } else {
 
                                     val gson = Gson()
@@ -178,13 +183,11 @@ fun CustomAlertDialog(
                                         //оновити список
                                         state.value = false
                                         state.value = true
-
-
                                     }
                                 }
                             }
                         ) {
-                            Text("Видалити")
+                            Text(stringResource(R.string.btn_name_delete))
                         }
                     }
                 }

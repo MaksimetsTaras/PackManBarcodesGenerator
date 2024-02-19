@@ -10,8 +10,8 @@
 // Зберігати останній обраний артикль, і все інше, для наступного входу
 // У AlertDialog scroll погано працює = перенести все у секцію buttons
 // Check for duplication
-// Create another layout for landscape
-// Після запуску завантажувати останній запис
+// Done - Create another layout for landscape
+// Done - Після запуску завантажувати останній запис
 // Done - Змінити заголовок, щоб був по середині і менший
 // Натискати кнопки coroutines
 // Done - AlertDialog для вибори раніше збережених записів - не видно кнопки нижні

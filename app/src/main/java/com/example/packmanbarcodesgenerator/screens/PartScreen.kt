@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.ImageBitmapConfig
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.PartQRcode
+import com.example.packmanbarcodesgenerator.R
 import com.example.packmanbarcodesgenerator.TypesOfInput
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 
@@ -187,21 +189,21 @@ fun PartScreenLandscape(
                 TextField_withButtons(
                     element = article,
                     modifier = Modifier,
-                    labelValue = "артикль",
+                    labelValue = stringResource(R.string.article),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = index,
                     modifier = Modifier,
-                    labelValue = "індекс",
+                    labelValue = stringResource(R.string.index),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = customerArticle,
                     modifier = Modifier,
-                    labelValue = "Артикль замовника",
+                    labelValue = stringResource(R.string.customer_number),
                     TypesOfInput.text
                 )
 
@@ -209,7 +211,7 @@ fun PartScreenLandscape(
                     TextField_withButtons(
                         element = HWversion,
                         modifier = Modifier,
-                        labelValue = "HW версія",
+                        labelValue = stringResource(R.string.HW_version),
                         TypesOfInput.text
                     )
                 }
@@ -218,7 +220,7 @@ fun PartScreenLandscape(
                     TextField_withButtons(
                         element = SWversion,
                         modifier = Modifier,
-                        labelValue = "SW версія",
+                        labelValue = stringResource(R.string.SW_version),
                         TypesOfInput.text
                     )
                 }
@@ -226,7 +228,7 @@ fun PartScreenLandscape(
                 TextField_withButtons(
                     element = serialNumber,
                     modifier = Modifier,
-                    labelValue = "Серійний номер",
+                    labelValue = stringResource(R.string.serial_number),
                     TypesOfInput.text
                 )
 
@@ -300,21 +302,21 @@ fun PartScreenPortrait(
             TextField_withButtons(
                 element = article,
                 modifier = Modifier,
-                labelValue = "артикль",
+                labelValue = stringResource(R.string.article),
                 TypesOfInput.integer
             )
 
             TextField_withButtons(
                 element = index,
                 modifier = Modifier,
-                labelValue = "індекс",
+                labelValue = stringResource(R.string.index),
                 TypesOfInput.integer
             )
 
             TextField_withButtons(
                 element = customerArticle,
                 modifier = Modifier,
-                labelValue = "Артикль замовника",
+                labelValue = stringResource(R.string.customer_number),
                 TypesOfInput.text
             )
 
@@ -322,7 +324,7 @@ fun PartScreenPortrait(
                 TextField_withButtons(
                     element = HWversion,
                     modifier = Modifier,
-                    labelValue = "HW версія",
+                    labelValue = stringResource(R.string.HW_version),
                     TypesOfInput.text
                 )
             }
@@ -331,7 +333,7 @@ fun PartScreenPortrait(
                 TextField_withButtons(
                     element = SWversion,
                     modifier = Modifier,
-                    labelValue = "SW версія",
+                    labelValue = stringResource(R.string.SW_version),
                     TypesOfInput.text
                 )
             }
@@ -339,7 +341,7 @@ fun PartScreenPortrait(
             TextField_withButtons(
                 element = serialNumber,
                 modifier = Modifier,
-                labelValue = "Серійний номер",
+                labelValue = stringResource(R.string.serial_number),
                 TypesOfInput.text
             )
 

@@ -12,6 +12,10 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavHost
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.packmanbarcodesgenerator.screens.MainScreen
 import com.example.packmanbarcodesgenerator.ui.theme.PackManBarcodesGeneratorTheme
 
@@ -32,7 +36,22 @@ class MainActivity : ComponentActivity() {
 
                     color = Color.Transparent
                 ) {
-                    MainScreen()
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = Screens.Splash){
+                        composable(route = Screens.Splash){
+                            SplashScreen(navController = navController)
+                        }
+
+                        composable(route = Screens.Main){
+                            MainScreen(navController = navController)
+                        }
+                    }
+//
+//
+//
+//
+//
+//                    MainScreen()
                 }
             }
         }

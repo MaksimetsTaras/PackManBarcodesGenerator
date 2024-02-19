@@ -121,7 +121,7 @@ fun MainScreenTopBar(
                         loadFromSharedPreferences(context, BottomItems.Box.name)
 
                     if (listOfSavedRecordsBox.isEmpty()) {
-                        makeToast(context, "Не має елементів для завантаження")
+                        makeToast(context, stringResource(R.string.no_values_to_show))
                         openDialogForLoad.value = false
                     }
 
@@ -130,12 +130,13 @@ fun MainScreenTopBar(
                         loadFromSharedPreferences(context, BottomItems.Part.name)
 
                     if (listOfSavedRecordsPart.isEmpty()) {
-                        makeToast(context, "Не має елементів для завантаження")
+                        makeToast(context, stringResource(R.string.no_values_to_show))
                         openDialogForLoad.value = false
                     }
                 }
             }
 
+            //Show downloaded
             if (openDialogForLoad.value) {
                 listOfCheckedItems.clear()
                 val activeBottomItem: String = getActiveBottomItem(backStackEntry)
@@ -194,7 +195,7 @@ fun MainScreenTopBar(
                     )
                     saveToSharedPreferences(context, dataPart = dataForPart)
                 }
-                makeToast(context, "Save")
+                makeToast(context, "Saved")
                 writeLastUsedRecordToSharedPref(context, currentUsedData)
             }) {
                 Icon(

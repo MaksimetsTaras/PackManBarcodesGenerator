@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">PackManBarcodesGenerator</string>
+    <string name="no_values_to_show">There are no previously saved records</string>
+    <string name="article">Article</string>
+    <string name="index">Index</string>
+    <string name="customer_number">Customer number</string>
+    <string name="HW_version">HW version</string>
+    <string name="SW_version">SW version</string>
+    <string name="serial_number">Serial Number</string>
+
+    <string name="qty_in_box">Quantity in box</string>
+    <string name="packaging">Packaging</string>
+    <string name="batch">Batch</string>
+
+    <string name="previously_saved">Previously saved: </string>
+    <string name="pcs">pcs</string>
+    <string name="choose_one_element">Choose minimum one element</string>
+
+    //Buttons
+    <string name="btn_name_choose">Choose</string>
+    <string name="btn_name_delete">Delete</string>
 </resources>

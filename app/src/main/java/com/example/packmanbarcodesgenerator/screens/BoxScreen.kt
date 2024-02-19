@@ -28,10 +28,12 @@ import androidx.compose.ui.graphics.ImageBitmapConfig
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import barcodeGenerator.BarcodeGenerator
 import barcodeGenerator.BoxQRcode
+import com.example.packmanbarcodesgenerator.R
 import com.example.packmanbarcodesgenerator.TypesOfInput
 import com.example.packmanbarcodesgenerator.uiElements.TextField_withButtons
 
@@ -142,42 +144,42 @@ fun BoxScreenPortrait(
                 TextField_withButtons(
                     element = article,
                     modifier = Modifier,
-                    labelValue = "артикль",
+                    labelValue = stringResource(R.string.article),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = index,
                     modifier = Modifier,
-                    labelValue = "індекс",
+                    labelValue = stringResource(R.string.index),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = quantityInBox,
                     modifier = Modifier,
-                    labelValue = "Кількість в ящику",
+                    labelValue = stringResource(R.string.qty_in_box),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = customerArticle,
                     modifier = Modifier,
-                    labelValue = "Артикль замовника",
+                    labelValue = stringResource(R.string.customer_number),
                     TypesOfInput.text
                 )
 
                 TextField_withButtons(
                     element = packaging,
                     modifier = Modifier,
-                    labelValue = "Пакування",
+                    labelValue = stringResource(R.string.packaging),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = batchNumber,
                     modifier = Modifier,
-                    labelValue = "Бетч",
+                    labelValue = stringResource(R.string.batch),
                     TypesOfInput.text
                 )
             }
@@ -229,42 +231,42 @@ fun BoxScreenLandscape(
                 TextField_withButtons(
                     element = article,
                     modifier = Modifier,
-                    labelValue = "артикль",
+                    labelValue = stringResource(R.string.article),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = index,
                     modifier = Modifier,
-                    labelValue = "індекс",
+                    labelValue = stringResource(R.string.index),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = quantityInBox,
                     modifier = Modifier,
-                    labelValue = "Кількість в ящику",
+                    labelValue = stringResource(R.string.qty_in_box),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = customerArticle,
                     modifier = Modifier,
-                    labelValue = "Артикль замовника",
+                    labelValue = stringResource(R.string.customer_number),
                     TypesOfInput.text
                 )
 
                 TextField_withButtons(
                     element = packaging,
                     modifier = Modifier,
-                    labelValue = "Пакування",
+                    labelValue = stringResource(R.string.packaging),
                     TypesOfInput.integer
                 )
 
                 TextField_withButtons(
                     element = batchNumber,
                     modifier = Modifier,
-                    labelValue = "Бетч",
+                    labelValue = stringResource(R.string.batch),
                     TypesOfInput.text
                 )
 
@@ -272,80 +274,6 @@ fun BoxScreenLandscape(
 
         }
     }
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .verticalScroll(rememberScrollState())
-//    ) {
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .weight(1f),
-//            verticalAlignment = Alignment.CenterVertically,
-//            horizontalArrangement = Arrangement.Center
-//        ) {
-//            Image(
-//                bitmap = qrCode.value,
-//                contentDescription = "QR code",
-//                contentScale = ContentScale.FillBounds,
-//                modifier = Modifier
-//                    .size(150.dp)
-//                    .fillMaxWidth()
-//            )
-//        }
-//
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth(),
-//            horizontalArrangement = Arrangement.SpaceEvenly,
-//            verticalAlignment = Alignment.Bottom
-//        ) {
-//            Column {
-//
-//                TextField_withButtons(
-//                    element = article,
-//                    modifier = Modifier,
-//                    labelValue = "артикль",
-//                    TypesOfInput.integer
-//                )
-//
-//                TextField_withButtons(
-//                    element = index,
-//                    modifier = Modifier,
-//                    labelValue = "індекс",
-//                    TypesOfInput.integer
-//                )
-//
-//                TextField_withButtons(
-//                    element = quantityInBox,
-//                    modifier = Modifier,
-//                    labelValue = "Кількість в ящику",
-//                    TypesOfInput.integer
-//                )
-//
-//                TextField_withButtons(
-//                    element = customerArticle,
-//                    modifier = Modifier,
-//                    labelValue = "Артикль замовника",
-//                    TypesOfInput.text
-//                )
-//
-//                TextField_withButtons(
-//                    element = packaging,
-//                    modifier = Modifier,
-//                    labelValue = "Пакування",
-//                    TypesOfInput.integer
-//                )
-//
-//                TextField_withButtons(
-//                    element = batchNumber,
-//                    modifier = Modifier,
-//                    labelValue = "Бетч",
-//                    TypesOfInput.text
-//                )
-//            }
-//        }
-//    }
 }
 
 fun generateBoxQRcode(
