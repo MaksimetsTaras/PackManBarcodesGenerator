@@ -1,7 +1,6 @@
 package com.example.packmanbarcodesgenerator
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -12,11 +11,11 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.packmanbarcodesgenerator.screens.MainScreen
+import com.example.packmanbarcodesgenerator.screens.SplashScreen
 import com.example.packmanbarcodesgenerator.ui.theme.PackManBarcodesGeneratorTheme
 
 class MainActivity : ComponentActivity() {

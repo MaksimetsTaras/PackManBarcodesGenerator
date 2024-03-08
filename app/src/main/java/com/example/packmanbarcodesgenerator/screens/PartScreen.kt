@@ -4,12 +4,10 @@ import TextAndSwitch
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -53,11 +51,11 @@ fun PartScreen(
     article: MutableState<String>,
     index: MutableState<String>,
     customerArticle: MutableState<String>,
-    HWversion: MutableState<String>,
-    SWversion: MutableState<String>,
+    hwVersion: MutableState<String>,
+    swVersion: MutableState<String>,
     serialNumber: MutableState<String>,
-    isHWpresent: MutableState<Boolean>,
-    isSWpresent: MutableState<Boolean>,
+    isHWPresent: MutableState<Boolean>,
+    isSWPresent: MutableState<Boolean>,
 ) {
 
     val configuration = LocalConfiguration.current
@@ -83,11 +81,11 @@ fun PartScreen(
                 article.value,
                 index.value,
                 customerArticle.value,
-                HWversion.value,
-                SWversion.value,
+                hwVersion.value,
+                swVersion.value,
                 serialNumber.value,
-                isHWpresent.value,
-                isSWpresent.value,
+                isHWPresent.value,
+                isSWPresent.value,
             )
         }
     }
@@ -102,11 +100,11 @@ fun PartScreen(
                     article,
                     index,
                     customerArticle,
-                    HWversion,
-                    SWversion,
+                    hwVersion,
+                    swVersion,
                     serialNumber,
-                    isHWpresent,
-                    isSWpresent
+                    isHWPresent,
+                    isSWPresent
                 )
             }
 
@@ -116,15 +114,17 @@ fun PartScreen(
                     article,
                     index,
                     customerArticle,
-                    HWversion,
-                    SWversion,
+                    hwVersion,
+                    swVersion,
                     serialNumber,
-                    isHWpresent,
-                    isSWpresent
+                    isHWPresent,
+                    isSWPresent
                 )
             }
-
             Configuration.ORIENTATION_UNDEFINED -> {}
+            Configuration.ORIENTATION_SQUARE -> {
+                TODO()
+            }
         }
     }
 }
@@ -244,11 +244,11 @@ fun PartScreenPortrait(
     article: MutableState<String>,
     index: MutableState<String>,
     customerArticle: MutableState<String>,
-    HWversion: MutableState<String>,
-    SWversion: MutableState<String>,
+    hwVersion: MutableState<String>,
+    swVersion: MutableState<String>,
     serialNumber: MutableState<String>,
-    isHWpresent: MutableState<Boolean>,
-    isSWpresent: MutableState<Boolean>
+    isHWPresent: MutableState<Boolean>,
+    isSWPresent: MutableState<Boolean>
 ) {
     Column(
         modifier = Modifier
@@ -262,17 +262,17 @@ fun PartScreenPortrait(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             TextAndSwitch(
-                "HW", modifier = Modifier.weight(1f), element = isHWpresent
+                "HW", modifier = Modifier.weight(1f), element = isHWPresent
             )
             Spacer(modifier = Modifier.width(20.dp))
 
             TextAndSwitch(
-                "SW", modifier = Modifier.weight(1f), element = isSWpresent
+                "SW", modifier = Modifier.weight(1f), element = isSWPresent
             )
         }
 
         Text(
-            text = multipleColorsInText(isSWpresent, isHWpresent),
+            text = multipleColorsInText(isSWPresent, isHWPresent),
             Modifier.fillMaxWidth(),
             fontSize = 20.sp,
             textAlign = TextAlign.Center
@@ -320,18 +320,18 @@ fun PartScreenPortrait(
                 TypesOfInput.text
             )
 
-            if (isHWpresent.value) {
+            if (isHWPresent.value) {
                 TextField_withButtons(
-                    element = HWversion,
+                    element = hwVersion,
                     modifier = Modifier,
                     labelValue = stringResource(R.string.HW_version),
                     TypesOfInput.text
                 )
             }
 
-            if (isSWpresent.value) {
+            if (isSWPresent.value) {
                 TextField_withButtons(
-                    element = SWversion,
+                    element = swVersion,
                     modifier = Modifier,
                     labelValue = stringResource(R.string.SW_version),
                     TypesOfInput.text
@@ -353,21 +353,21 @@ fun generate_PartQRcode(
     article: String,
     index: String,
     customerArticle: String,
-    HWversion: String,
-    SWversion: String,
+    hwVersion: String,
+    swVersion: String,
     serialNumber: String,
-    isHWpresent: Boolean,
-    isSWpresent: Boolean
+    isHWPresent: Boolean,
+    isSWPresent: Boolean
 ): ImageBitmap {
     val partInfoForQRcode = PartQRcode(
         article = article,
         index = index,
         customerArticle = customerArticle,
-        HWversion = HWversion,
-        SWversion = SWversion,
+        HWversion = hwVersion,
+        SWversion = swVersion,
         serialNumber = serialNumber,
-        isHWpresent = isHWpresent,
-        isSWpresent = isSWpresent,
+        isHWpresent = isHWPresent,
+        isSWpresent = isSWPresent,
     )
 
     val barcodeGenerator = BarcodeGenerator()

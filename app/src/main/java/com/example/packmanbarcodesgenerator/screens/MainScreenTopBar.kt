@@ -33,7 +33,7 @@ import barcodeGenerator.BoxQRcode
 import barcodeGenerator.LastUsedData
 import barcodeGenerator.PartQRcode
 import com.example.packmanbarcodesgenerator.R
-import com.example.packmanbarcodesgenerator.uiElements.CustomListView.CustomAlertDialog
+import com.example.packmanbarcodesgenerator.uiElements.CustomAlertDialog.CustomAlertDialog
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
