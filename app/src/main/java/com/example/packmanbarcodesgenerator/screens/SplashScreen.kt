@@ -33,7 +33,8 @@ fun SplashScreen(navController: NavController) =
                 targetValue = 0.8f,//zoom of image
                 animationSpec = tween(
                     1000,
-                    easing = LinearOutSlowInEasing)
+                    easing = LinearOutSlowInEasing
+                )
             )
 //            delay(1000)
 
@@ -43,10 +44,11 @@ fun SplashScreen(navController: NavController) =
                 }
             }
         }
+
         Image(
             modifier = Modifier
-                .fillMaxSize()
-                .scale(scale.value),
+                .scale(scale.value)
+                .fillMaxSize(),
             painter = painterResource(id = R.drawable.splash_screen),
             contentDescription = null,
             alignment = Alignment.Center

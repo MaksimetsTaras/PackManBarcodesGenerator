@@ -4,15 +4,15 @@
 //VW_DPC -  /P6V2959857A     /3OS10130926-04             /SN93266WGO00011
 
 
-// Not needed - TODO Image refreshes, when some values increments or decrements
-// Done - TODO Not always SW and HW present. Need checkbox. If check box enabled, use this check box
+// Not needed - Image refreshes, when some values increments or decrements
+// Done - Not always SW and HW present. Need checkbox. If check box enabled, use this check box
 // Передавати в compose об'єкт, а не змінні
 // Зберігати останній обраний артикль, і все інше, для наступного входу
-// У AlertDialog scroll погано працює = перенести все у секцію buttons
+// Done - У AlertDialog scroll погано працює = перенести все у секцію buttons
 // Check for duplication
 // Done - Create another layout for landscape
 // Done - Після запуску завантажувати останній запис
 // Done - Змінити заголовок, щоб був по середині і менший
 // Натискати кнопки coroutines
 // Done - AlertDialog для вибори раніше збережених записів - не видно кнопки нижні
-// SplashScreen
+// Done - SplashScreen
